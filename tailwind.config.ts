@@ -11,6 +11,13 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        mainThemePrimary: "#572b3a",
+        mainThemeDarker: "#360414",
+        mainThemeLighter: "#cc9bab",
+        mainThemeFullLighter: "#e3c3cd",
+        purpleThemePrimary: "#c9c5d4",
+        purpleThemeSecondary: "#908c9c",
+        purpleThemeTertiary: "#8c869c",
       },
     },
   },

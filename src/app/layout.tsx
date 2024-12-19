@@ -1,16 +1,21 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+// const geistSans = Geist({
+//   variable: "--font-geist-sans",
+//   subsets: ["latin"],
+// });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+// const geistMono = Geist_Mono({
+//   variable: "--font-geist-mono",
+//   subsets: ["latin"],
+// });
+
+const robotoBlack = Roboto({
+  weight: "900",
   subsets: ["latin"],
-});
+})
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,11 +28,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="pt-br">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`antialiased bg-mainThemePrimary`}
       >
-        {children}
+        <header className={`${robotoBlack.className} text-zinc-300 text-3xl w-full h-16 flex justify-center`}>
+          <div className="md:w-5/6 w-full h-16 bg-mainThemeDarker flex justify-center items-center">
+            BBBAGUNÇA
+          </div>
+        </header>
+        <main className="w-full flex justify-center">
+          <div className="md:w-5/6 w-full bg-purpleThemePrimary">
+            {children}
+          </div>
+        </main>
       </body>
     </html>
   );
