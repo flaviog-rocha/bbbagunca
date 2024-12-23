@@ -1,13 +1,7 @@
 import { JSX } from "react";
-import { Roboto } from "next/font/google";
 import ProfileIcon from "./components/ProfileIcon";
 import Carousel from "./components/Carousel";
 import Article from "./components/Article";
-
-const roboto = Roboto({
-  weight: "500",
-  subsets: ["latin"],
-})
 
 function headerIcons(){
   let iconArray: JSX.Element[] = [];
@@ -26,10 +20,7 @@ export default function Home() {
   const iconArray = headerIcons();
 
   return (
-    <div className={`${roboto.className}`}>
-      {/* <div width={{}}>
-
-      </div> */}
+    <div>
       <div className={`w-full h-${iconArray.length > 24 ? '36' : '24'} bg-purpleThemeSecondary flex justify-center items-center mb-12`}>
         <div>
           <div className="flex items-center">
