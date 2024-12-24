@@ -13,6 +13,7 @@ export default {
         foreground: "var(--foreground)",
         mainThemePrimary: "#572b3a",
         mainThemeDarker: "#360414",
+        mainThemeSecondary: "#7d384f",
         mainThemeLighter: "#cc9bab",
         mainThemeFullLighter: "#e3c3cd",
         purpleThemePrimary: "#c9c5d4",

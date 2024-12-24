@@ -33,7 +33,7 @@ export default function CicleInfo({number, infos}: Cicle){
 
     return (
         <div className='flex justify-center'>
-            <div className='peer w-28 h-28 rounded-2xl bg-purpleThemeSecondary flex justify-center items-center flex-col'>
+            <div className='peer w-24 h-24 rounded-2xl bg-purpleThemeSecondary flex justify-center items-center flex-col'>
                 <div className='text-sm'>
                     Ciclo
                 </div>

@@ -48,9 +48,9 @@ export default function Home() {
         }}
       >
         <div className="w-4/6">
-          <Article/>
+          <Article id={1}/>
           <div className='h-0.5 bg-purpleThemeTertiary w-full mx-auto my-5'></div>
-          <Article/>
+          <Article id={2}/>
         </div>
       </div>
     </div>

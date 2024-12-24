@@ -18,7 +18,7 @@ export default function ProfileIcon({name}: Houseguests){
             >
             </Image>
             <div className='absolute rounded-xl opacity-0 z-10 peer-hover:block peer-hover:opacity-100 hidden transition duration-500 ease-in-out text-sm text-zinc-100'>
-                <div className='bg-indigo-600 p-2 w-28 flex justify-center mx-auto rounded-2xl' style={{marginLeft: '-25px', boxSizing: 'border-box'}}>
+                <div className='bg-mainThemeDarker p-2 w-28 flex justify-center mx-auto rounded-2xl' style={{marginLeft: '-25px', boxSizing: 'border-box'}}>
                     {name}
                 </div>
             </div>
