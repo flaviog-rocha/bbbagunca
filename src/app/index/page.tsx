@@ -1,7 +1,7 @@
 import { JSX } from "react";
-import ProfileIcon from "./components/ProfileIcon";
-import Carousel from "./components/Carousel";
-import Article from "./components/Article";
+import ProfileIcon from "../components/ProfileIcon";
+import Carousel from "../components/Carousel";
+import Article from "../components/Article";
 
 function headerIcons(){
   let iconArray: JSX.Element[] = [];

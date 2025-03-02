@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Roboto } from "next/font/google";
 import ParticipantInfo from "@/app/components/ParticipantInfo";
-import Camila from '../../../../public/img/full-pic/Isabel.png';
+import Camila from '../../../../../public/img/full-pic/Isabel.png';
 import ParticipantAffinity from "@/app/components/ParticipantAffinity";
 import CicleInfo from "@/app/components/CicleInfo";
 import { JSX } from "react";
