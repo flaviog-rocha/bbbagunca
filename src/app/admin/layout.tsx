@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "../globals.css";
+import SidebarOption from "../components/SidebarOption";
+import { mdiHomeClockOutline, mdiHumanGreetingVariant, mdiHumanQueue, mdiChartHistogram, mdiChatProcessing, mdiController } from '@mdi/js';
+import { ReactElement } from "react";
+import Image from "next/image";
+import LogoTorchic from "../../../public/img/Torchic Fazenda.png"
+import Link from "next/link";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -32,16 +38,76 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  interface sidebarOptionsInterface {
+    icon: string,
+    name: string,
+    key: string,
+  }
+
+  const sidebarOptions: sidebarOptionsInterface[] = [
+    {
+      icon: mdiHomeClockOutline,
+      name: "Realities",
+      key: "realities"
+    },
+    {
+      icon: mdiHumanQueue,
+      name: "Temporadas",
+      key: "seasons"
+    },
+    {
+      icon: mdiChatProcessing,
+      name: "Postagens",
+      key: "posts"
+    },
+    {
+      icon: mdiController,
+      name: "Dinâmicas",
+      key: "dynamics"
+    },
+    {
+      icon: mdiHumanGreetingVariant,
+      name: "Traços",
+      key: "traits"
+    },
+    {
+      icon: mdiChartHistogram,
+      name: "Votações",
+      key: "votes",
+    },
+  ];
+
+  const optionsList = (options: sidebarOptionsInterface[]): ReactElement[] => {
+    const menuOptions = [];
+
+    for (const option of options){
+      menuOptions.push(
+        <SidebarOption
+          key={option.key}
+          icon={option.icon}
+          name={option.name}
+        />
+      );
+    }
+
+    return menuOptions;
+  }
+
   return (
     <html lang="pt-br" className="h-full">
       <body
         className={`antialiased bg-mainThemePrimary ${roboto.className} h-full`}
       >
         <main className="w-full h-full justify-center flex justify-center items-center">
-          <div className="md:w-5/6 md:h-5/6 bg-purpleThemePrimary flex shadow-xl">
-            <div className="h-full w-24 bg-indigo-500">
+          <div className="md:w-5/6 md:h-5/6 bg-purpleThemeLighter flex shadow-xl rounded-xl">
+            <div className="h-full w-56 bg-mainThemeDarker rounded-l-xl">
+              <div className="flex justify-center mb-4">
+                <Link href={"/admin"}><Image src={LogoTorchic} width={120} height={120} alt={"Logo GustTV, Torchic de chapéu"}/></Link>
+              </div>
+              {optionsList(sidebarOptions)}
             </div>
-            <div className="h-full">
+            <div className="h-full w-full">
               {children}
             </div>
           </div>

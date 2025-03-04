@@ -18,6 +18,7 @@ export default {
         mainThemeFullLighter: "#e3c3cd",
         purpleThemePrimary: "#c9c5d4",
         purpleThemeLighter: "#e2dcf2",
+        purpleThemeLighterTable: "#d5d1e0",
         purpleThemeSecondary: "#908c9c",
         purpleThemeTertiary: "#8c869c",
       },

@@ -6,7 +6,6 @@ import Image from 'next/image';
 
 interface Houseguests {
     name: string,
-
 }
 
 export default function ProfileIcon({name}: Houseguests){
