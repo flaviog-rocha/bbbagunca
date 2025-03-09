@@ -1,5 +1,10 @@
+"use client"
+
 import Table from "@/app/components/Table"
 import { Roboto } from "next/font/google"
+import { useState } from "react"
+import Modal from "@/app/components/Modal"
+import CrudReality from "@/app/components/CrudReality"
 
 const robotoBlack = Roboto({
   weight: "900",
@@ -7,6 +12,7 @@ const robotoBlack = Roboto({
 })
 
 export default function Realities(){
+    const [openedModal, setOpenedModal] = useState(false);
     interface realitiesTableData {
         key: string,
         name: string,
@@ -65,6 +71,16 @@ export default function Realities(){
     ]
     return(
         <div className="w-full">
+            {
+                openedModal ? (
+                    <Modal 
+                        title="Ablublé"
+                        setModal={setOpenedModal}
+                    >
+                        <CrudReality/>
+                    </Modal>
+                ) : <></>
+            }
             <div className={`w-full bg-purpleThemeTertiary h-12 flex items-center pl-5 text-xl rounded-tr-xl ${robotoBlack.className}`}>Realities</div>
             <div className="flex justify-center mt-12">
                 <div>
@@ -72,15 +88,16 @@ export default function Realities(){
                     <div className="text-right">
                         <button 
                             className={`bg-mainThemePrimary p-3 text-zinc-200 mt-3 ${robotoBlack.className} hover:bg-mainThemeSecondary transition duration-200 rounded-xl`}
+                            onClick={() => {
+                                    setOpenedModal(true)
+                                }
+                            }
                         >
                                 Adicionar novo
                         </button>
                     </div>
-                    
                 </div>
-                
             </div>
-
         </div>
     )
 }
