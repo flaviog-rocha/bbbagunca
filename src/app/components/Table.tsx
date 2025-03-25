@@ -1,3 +1,5 @@
+import { JSX } from "react";
+
 interface tableInterface {
     header: rowContent[],
     data?: rowContent[][],
@@ -5,8 +7,9 @@ interface tableInterface {
 
 interface rowContent {
     key: string,
-    name: string,
+    name: string | JSX.Element,
     size?: number,
+    textAlign?: string,
 }
 
 export default function Table({header, data}: tableInterface){
@@ -24,7 +27,7 @@ export default function Table({header, data}: tableInterface){
                         }
                     }
                 >
-                    {headerData.name} 
+                    {typeof headerData.name === 'string' ? headerData.name : ''} 
                 </th>
             )
         }
@@ -74,7 +77,7 @@ export default function Table({header, data}: tableInterface){
                     row.push(
                         <td 
                             key={`row-${index}-${data.key}`} 
-                            className={`p-3 h-6`}
+                            className={`p-3 h-6 ${data.textAlign? 'text-' + data.textAlign : ''}`}
                         >
                             {data.name}
                         </td>
