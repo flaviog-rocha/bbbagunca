@@ -11,7 +11,7 @@ function headerIcons(){
   ];
 
   for (const name of houseguests){
-    iconArray = [...iconArray, <ProfileIcon name={name} key={name}/>]
+    iconArray = [...iconArray, <ProfileIcon participantName={name} key={name}/>]
   }
 
   return iconArray;

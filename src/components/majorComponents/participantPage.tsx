@@ -28,7 +28,7 @@ export default function ParticipantPage({participantName}: name){
 
         for (const index in participantsList){
             if (participantsList[index] !== participantName){
-                arrayLine = arrayLine.concat(<ParticipantAffinity name={participantsList[index]} key={`afinity-${participantsList[index]}`}/>)
+                arrayLine = arrayLine.concat(<ParticipantAffinity participantName={participantsList[index]} key={`afinity-${participantsList[index]}`}/>)
             }
 
             if (arrayLine.length === 3 || Number(index) === participantsList.length - 1){
