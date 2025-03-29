@@ -1,14 +1,9 @@
+import { modalProps } from "@/utils/interfaces"
+
 import Icon from "@mdi/react"
 import { mdiClose } from "@mdi/js"
 
-interface ModalProps {
-    title: string,
-    width?: string,
-    height?: string,
-    setModal: (opened: boolean) => void,
-}
-
-export default function Modal({children, title, width, height, setModal}: React.PropsWithChildren<ModalProps>){
+export default function Modal({children, title, width, height, setModal}: React.PropsWithChildren<modalProps>){
     return(
         <div>
             <div className="w-screen h-screen bg-black absolute top-0 right-0 opacity-60" ></div>

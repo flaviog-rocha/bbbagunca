@@ -1,16 +1,5 @@
-import { JSX } from "react";
-
-interface tableInterface {
-    header: rowContent[],
-    data?: rowContent[][],
-}
-
-interface rowContent {
-    key: string,
-    name: string | JSX.Element,
-    size?: number,
-    textAlign?: string,
-}
+import { tableInterface } from "@/utils/interfaces";
+import { rowContent } from "@/utils/interfaces";
 
 export default function Table({header, data}: tableInterface){
     const tableHeader = (headerObj: rowContent[]) => {

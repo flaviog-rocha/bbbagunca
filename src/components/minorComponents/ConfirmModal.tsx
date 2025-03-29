@@ -1,11 +1,6 @@
-import { JSX } from "react"
+import { confirmModalInterface } from "@/utils/interfaces";
 
-interface ConfirmModalInterface {
-    message: string
-    buttons?: JSX.Element[]
-}
-
-export default function ConfirmModal({message, buttons}: ConfirmModalInterface){
+export default function ConfirmModal({message, buttons}: confirmModalInterface){
     return (
         <div className="p-4">
             <div>

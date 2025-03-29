@@ -1,11 +1,6 @@
-interface InputProps {
-    id: string,
-    inputName: string,
-    className?: string,
-    value?: string,
-}
+import { inputProps } from "@/utils/interfaces"
 
-export default function Input({inputName, id, className, value}: InputProps){
+export default function Input({inputName, id, className, value}: inputProps){
     return (
         <div className={className}>
             <label htmlFor={id} className="block pb-1">{inputName}</label>

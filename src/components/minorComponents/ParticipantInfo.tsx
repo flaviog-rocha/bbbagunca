@@ -1,3 +1,6 @@
+import { participantInfoProps } from "@/utils/interfaces"
+import { imagesListType } from "@/utils/interfaces"
+
 import Image from "next/image"
 import Anjo from "../../../public/img/icons/anjo.png"
 import Camarote from "../../../public/img/icons/camarote.png"
@@ -10,16 +13,6 @@ import Paredao from "../../../public/img/icons/paredao.png"
 import Pipoca from "../../../public/img/icons/pipoca.png"
 import Salvo from "../../../public/img/icons/salvo.png"
 import Trait from "../../../public/img/icons/trait.png"
-
-interface imagesListType {
-    label: string,
-    image: string,
-}
-
-interface participantInfoProps {
-    infoClass: string,
-    info: string
-}
 
 export default function ParticipantInfo({infoClass, info}: participantInfoProps){
     const imagesList: imagesListType[] = [

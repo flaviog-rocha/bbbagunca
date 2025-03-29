@@ -2,17 +2,14 @@ import { JSX } from 'react'
 import '../../app/globals.css'
 import { Roboto } from 'next/font/google'
 
+import { cicle } from '@/utils/interfaces'
+
 const robotoBlack = Roboto({
   weight: "900",
   subsets: ["latin"],
 })
 
-interface Cicle {
-    number: number,
-    infos: string[],
-}
-
-export default function CicleInfo({number, infos}: Cicle){
+export default function CicleInfo({number, infos}: cicle){
     const infosList = (): JSX.Element => {
         const list: JSX.Element[] = []
 

@@ -2,16 +2,14 @@ import Link from 'next/link'
 import '../../app/globals.css'
 import { Roboto } from 'next/font/google'
 
+import { id } from '@/utils/interfaces'
+
 const robotoBlack = Roboto({
   weight: "900",
   subsets: ["latin"],
 })
 
-interface ArticleProperties {
-    id: number
-}
-
-export default function Article({id}: ArticleProperties) {
+export default function Article({id}: id) {
     return (
         <Link 
             className="group flex justify-between"

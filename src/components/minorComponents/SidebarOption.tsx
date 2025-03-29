@@ -1,10 +1,9 @@
+import { iconProps } from '@/utils/interfaces';
+
 import Icon from '@mdi/react';
 import Link from 'next/link';
 
-interface iconProps {
-    icon: string,
-    name: string,
-}
+
 export default function SidebarOption({ icon, name}: iconProps){
     return (
         <Link href={"/admin/realities"}>

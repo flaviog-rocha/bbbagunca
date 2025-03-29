@@ -1,21 +1,10 @@
+import { carouselProps, carouselPagesProps, buttonProps } from "@/utils/interfaces";
+
 import { Roboto } from "next/font/google";
 import '../../app/globals.css'
 import { JSX } from "react";
 
-interface ButtonProps {
-    buttonString: string,
-} 
-
-interface CarouselProps {
-    title: string,
-    subtitle: string,
-}
-
-interface CarouselPagesProps {
-    isActive: boolean,
-}
-
-function PassButton({buttonString}: ButtonProps){
+function PassButton({buttonString}: buttonProps){
     return (
         <div className='w-6 h-6 rounded-full bg-mainThemeFullLighter hover:bg-mainThemeLighter transition duration-500 flex justify-center items-center select-none cursor-pointer'>
             {buttonString}
@@ -23,7 +12,7 @@ function PassButton({buttonString}: ButtonProps){
     )
 }
 
-function CarouselPages({isActive}: CarouselPagesProps){
+function CarouselPages({isActive}: carouselPagesProps){
     return (
         <div className={`rounded-full w-3 h-3 mx-2 ${isActive ? 'bg-mainThemeDarker' : 'bg-mainThemeFullLighter'}`}></div>
     )
@@ -39,7 +28,7 @@ const robotoBlack = Roboto({
     subsets: ["latin"],
 })
 
-export default function Carousel({title, subtitle}: CarouselProps){
+export default function Carousel({title, subtitle}: carouselProps){
     const CarouselPagesArray = () => {
         let pagesArray: JSX.Element[] = []
 

@@ -1,22 +1,12 @@
-import { JSX } from "react";
 import Input from "./Input";
 import { Roboto } from "next/font/google";
 import { getInfoKey } from "@/utils/objectFunctions";
+import { infosInterface } from "@/utils/interfaces";
 
 const robotoBlack = Roboto({
   weight: "900",
   subsets: ["latin"],
 })
-interface dataInterface {
-    key: string,
-    name: string | JSX.Element,
-    size?: number,
-    textAlign?: string,
-}
-
-interface infosInterface {
-    infos: dataInterface[] | ArrayConstructor
-}
 
 export default function CrudReality({infos}: infosInterface){
     return (
