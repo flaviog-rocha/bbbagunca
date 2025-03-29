@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "../globals.css";
-import SidebarOption from "../components/SidebarOption";
+import SidebarOption from "../../components/minorComponents/SidebarOption";
 import { mdiHomeClockOutline, mdiHumanGreetingVariant, mdiHumanQueue, mdiChartHistogram, mdiChatProcessing, mdiController } from '@mdi/js';
 import { ReactElement } from "react";
 import Image from "next/image";

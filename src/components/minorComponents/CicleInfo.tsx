@@ -1,5 +1,5 @@
 import { JSX } from 'react'
-import '../globals.css'
+import '../../app/globals.css'
 import { Roboto } from 'next/font/google'
 
 const robotoBlack = Roboto({

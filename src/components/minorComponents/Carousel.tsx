@@ -1,5 +1,5 @@
 import { Roboto } from "next/font/google";
-import '../globals.css'
+import '../../app/globals.css'
 import { JSX } from "react";
 
 interface ButtonProps {
