@@ -138,7 +138,7 @@ export async function DELETE(req: NextRequest){
             }
         })
 
-        return NextResponse.json({status: 204});
+        return new NextResponse(null, {status: 204});
     }
     catch (error){
         console.log(error)
