@@ -24,6 +24,7 @@ export interface infosInterface {
     infos: dataInterface[] | ArrayConstructor,
     crudAction: string,
     setModal: (opened: boolean) => void,
+    setCrudReality: (data: crudReality) => void,
 }
 export interface carouselProps {
     title: string,
@@ -103,4 +104,13 @@ export interface realitiesTableData {
     name: string | JSX.Element,
     size?: number,
     textAlign?: string,
+}
+
+export interface crudReality {
+    id_reality?: number,
+    name: string,
+    max_power?: string,
+    sec_power?: string,
+    danger_zone?: string,
+    safe_zone?: string,
 }

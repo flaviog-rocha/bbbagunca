@@ -11,37 +11,25 @@ const robotoBlack = Roboto({
   subsets: ["latin"],
 })
 
-export default function CrudReality({infos, crudAction, setModal}: infosInterface){
+export default function CrudReality({infos, crudAction, setModal, setCrudReality}: infosInterface){
     const addReality = async () => {
-        await fetch("/api/reality", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                name: realityName,
-                max_power: maxPower,
-                sec_power: secPower,
-                danger_zone: dangerZone,
-                safe_zone: safeZone,
-            })
+        setCrudReality({
+            name: realityName,
+            max_power: maxPower,
+            sec_power: secPower,
+            danger_zone: dangerZone,
+            safe_zone: safeZone,
         })
     }
 
     const updateReality = async () => {
-        await fetch("/api/reality", {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                id_reality: realityId,
-                name: realityName,
-                max_power: maxPower,
-                sec_power: secPower,
-                danger_zone: dangerZone,
-                safe_zone: safeZone,
-            })
+        setCrudReality({
+            id_reality: realityId,
+            name: realityName,
+            max_power: maxPower,
+            sec_power: secPower,
+            danger_zone: dangerZone,
+            safe_zone: safeZone,
         })
     }
 
@@ -65,7 +53,6 @@ export default function CrudReality({infos, crudAction, setModal}: infosInterfac
     const [safeZone, setSafeZone] = useState<string>("");
 
     useEffect(() => {
-        console.log(infos)
         if (infos){
             setRealityId(Number(getInfoKey(infos, "id_reality")))
             setRealityName(getInfoKey(infos, "name"));

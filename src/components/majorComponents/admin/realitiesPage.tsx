@@ -10,7 +10,7 @@ import Icon from "@mdi/react"
 import ConfirmModal from "@/components/minorComponents/ConfirmModal"
 import { getInfoKey } from "@/utils/objectFunctions"
 
-import { apiReality, realitiesTableData } from "@/utils/interfaces"
+import { apiReality, realitiesTableData, crudReality } from "@/utils/interfaces"
 
 const robotoBlack = Roboto({
   weight: "900",
@@ -18,59 +18,7 @@ const robotoBlack = Roboto({
 })
 
 export default function RealitiesPage(){
-    const [tableData, setTableData] = useState<realitiesTableData[][]>([]);
-    const [openedModal, setOpenedModal] = useState<boolean>(false);
-    const [openedDeleteModal, setOpenedDeleteModal] = useState<boolean>(false);
-    const [modalTitle, setModalTitle] = useState<string>("");
-    const [crudOperation, setCrudOperation] = useState<string>("add");
-    const [modalCrudIndex, setModalCrudIndex] = useState<number>(-1);
-    const [modalCrudContent, setModalCrudContent] = useState<realitiesTableData[] | ArrayConstructor>([]);
-    const [deleteContent, setDeleteContent] = useState<boolean>(false);
-
-    useEffect(() => {
-        getRealities()
-    }, [])
-
-    useEffect(() => {
-        console.log("Teste 1")
-        if (modalTitle && modalTitle !== ""){
-            console.log ("If Teste 1")
-            setModalCrudContent(tableData[modalCrudIndex])
-        }
- 
-    }, [tableData, modalCrudIndex, modalTitle, crudOperation])
-
-    useEffect(() => {
-        console.log("Teste 2")
-        if (modalTitle && modalTitle !== ""){
-            console.log ("If Teste 2")
-            if (crudOperation === "add" || crudOperation === "edit"){
-                setOpenedModal(true)
-            }
-            else {
-                setOpenedDeleteModal(true)
-            }
-        }
-        
-    }, [modalCrudContent, modalTitle, crudOperation])
-
-    useEffect(() => {
-        console.log("Teste 3")
-        if (!openedModal){
-            setModalCrudIndex(-1)
-            setModalTitle("")
-        }
-        
-    }, [openedModal])
-
-    useEffect(() => {
-        console.log(modalCrudContent)
-        if (deleteContent){
-            deleteReality(Number(getInfoKey(modalCrudContent, "id_reality")));
-            setDeleteContent(false);
-        }
-    }, [deleteContent])
-
+    // API CALLS
     const getRealities = async () => {
         const formatedTableData: realitiesTableData[][] = [];
         const res = await fetch("/api/reality", {
@@ -79,7 +27,6 @@ export default function RealitiesPage(){
         const datas = await res.json();
 
         datas?.forEach((data: apiReality, index: number) => {
-            console.log(index)
             const lineData: realitiesTableData[] = Object.entries(data).map(([key, value]) => ({
                 key,
                 name: value,
@@ -91,7 +38,53 @@ export default function RealitiesPage(){
         })
 
         setTableData(formatedTableData)
-        // console.log(datas)
+    }
+
+    const addReality = async (reality: crudReality) => {
+        const res = await fetch("/api/reality", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: reality.name,
+                max_power: reality.max_power,
+                sec_power: reality.sec_power,
+                danger_zone: reality.danger_zone,
+                safe_zone: reality.safe_zone,
+            })
+        })
+
+        const data = await res.json()
+        console.log(data)
+
+        const lineData: realitiesTableData[] = Object.entries(data).map(([key, value]) => (
+            {
+                key,
+                name: value as string
+            }
+        ))
+
+        lineData.push({key: "seasons", name: "1"})
+        lineData.push({key: "actions", name: tableActions(tableData.length), textAlign: "right"})
+        setTableData([...tableData, lineData])
+    }
+
+    const updateReality = async (reality: crudReality) => {
+        await fetch("/api/reality", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                id_reality: reality.id_reality,
+                name: reality.name,
+                max_power: reality.max_power,
+                sec_power: reality.sec_power,
+                danger_zone: reality.danger_zone,
+                safe_zone: reality.safe_zone,
+            })
+        })
     }
 
     const deleteReality = async (idReality: number) => {
@@ -102,6 +95,77 @@ export default function RealitiesPage(){
             })
         });
     }
+
+    // STATES
+    const [tableData, setTableData] = useState<realitiesTableData[][]>([]);
+    const [openedModal, setOpenedModal] = useState<boolean>(false);
+    const [openedDeleteModal, setOpenedDeleteModal] = useState<boolean>(false);
+    const [modalTitle, setModalTitle] = useState<string>("");
+    const [crudOperation, setCrudOperation] = useState<string>("add");
+    const [modalCrudIndex, setModalCrudIndex] = useState<number>(-1);
+    const [modalCrudContent, setModalCrudContent] = useState<realitiesTableData[] | ArrayConstructor>([]);
+    const [crudResult, setCrudResult] = useState<crudReality>()
+    const [deleteContent, setDeleteContent] = useState<boolean>(false);
+
+    // EFFECTS
+    useEffect(() => {
+        getRealities()
+    }, [])
+
+    useEffect(() => {
+        if (modalTitle && modalTitle !== ""){
+            setModalCrudContent(tableData[modalCrudIndex])
+        }
+ 
+    }, [modalTitle])
+
+    useEffect(() => {
+        if (modalTitle && modalTitle !== ""){
+            if (crudOperation === "add" || crudOperation === "edit"){
+                setOpenedModal(true)
+            }
+            else {
+                setOpenedDeleteModal(true)
+            }
+        }
+        
+    }, [modalCrudContent, modalTitle, crudOperation])
+
+    useEffect(() => {
+        if (!openedModal && !openedDeleteModal){
+            setModalCrudIndex(-1)
+            setModalTitle("")
+        }
+        
+    }, [openedModal, openedDeleteModal])
+
+    useEffect(() => {
+        if (deleteContent){
+            deleteReality(Number(getInfoKey(modalCrudContent, "id_reality")));
+            setTableData(() => 
+                tableData.filter((data) => Number(getInfoKey(modalCrudContent, "id_reality")) !== Number(getInfoKey(data, "id_reality")))
+            )
+            setDeleteContent(false);
+            setOpenedDeleteModal(false);
+        }
+    }, [deleteContent])
+
+    useEffect(() => {
+        console.log(tableData)
+    }, [tableData])
+    useEffect(() => {
+        if (crudResult){
+            if (crudOperation === "add"){
+                addReality(crudResult)
+            }
+
+            else if (crudOperation === "edit"){
+                updateReality(crudResult)
+            }
+        }
+    }, [crudResult])
+
+    // OTHER FUNCTIONS
     const actionButton = (icon: string, action: (() => void)) => {
         return (
             <button 
@@ -118,9 +182,6 @@ export default function RealitiesPage(){
             <>
                 {
                     actionButton(mdiPen, () => {
-                        console.log(`Index: ${index}`)
-                        console.log(tableData)
-                        console.log(tableData[index])
                         setModalTitle("Editar Reality")
                         setModalCrudIndex(index)
                         setCrudOperation("edit")
@@ -155,6 +216,7 @@ export default function RealitiesPage(){
         }
     ]
 
+    // FINAL COMPONENT
     return(
         <div className="w-full">
             {
@@ -163,7 +225,7 @@ export default function RealitiesPage(){
                         title={modalTitle}
                         setModal={setOpenedModal}
                     >
-                        <CrudReality infos={modalCrudContent} crudAction={crudOperation} setModal={setOpenedModal}/>
+                        <CrudReality infos={modalCrudContent} crudAction={crudOperation} setModal={setOpenedModal} setCrudReality={setCrudResult}/>
                     </Modal>
                 ) : <></>
             }
