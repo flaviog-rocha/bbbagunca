@@ -15,8 +15,9 @@ datasource db {
 
 model Reality {
   id_reality Int @id  @default(autoincrement())
+  name String @unique
   max_power String
-  sec_power String
-  danger_zone String
-  safe_zone String
+  sec_power String?
+  danger_zone String?
+  safe_zone String?
 }

@@ -29,7 +29,7 @@ export default function Table({header, data}: tableInterface){
 
         if (!contents || contents.length === 0){
             rowsData.push(
-                <tr>
+                <tr key="empty-line-warning">
                     <td 
                         key="empty-table-warning" 
                         colSpan={header.length} 
@@ -58,26 +58,18 @@ export default function Table({header, data}: tableInterface){
     }
 
     const tableRow = (dataObj: rowContent[], index: string) => {
-        const row = []
-
-        for (const headerInfo of header){
-            for (const data of dataObj){
-                if (headerInfo.key === data.key){
-                    row.push(
-                        <td 
-                            key={`row-${index}-${data.key}`} 
-                            className={`p-3 h-6 ${data.textAlign? 'text-' + data.textAlign : ''}`}
-                        >
-                            {data.name}
-                        </td>
-                    )
-                    break;
-                }
-            }
-        }
-
-        return row;
-    }
+        return header.map((headerInfo) => {
+            const data = dataObj.find((d) => d.key === headerInfo.key);
+            return (
+                <td 
+                    key={`row-${index}-${headerInfo.key}`} 
+                    className={`p-3 h-6 ${data?.textAlign ? 'text-' + data.textAlign : ''}`}
+                >
+                    {data?.name || ''}
+                </td>
+            );
+        });
+    };
 
     return (
         <table className="border border-collapse border-mainThemePrimary">

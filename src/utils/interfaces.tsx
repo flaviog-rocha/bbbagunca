@@ -21,7 +21,9 @@ export interface carouselPagesProps {
 }
 
 export interface infosInterface {
-    infos: dataInterface[] | ArrayConstructor
+    infos: dataInterface[] | ArrayConstructor,
+    crudAction: string,
+    setModal: (opened: boolean) => void,
 }
 export interface carouselProps {
     title: string,
@@ -70,6 +72,7 @@ export interface inputProps {
     inputName: string,
     className?: string,
     value?: string,
+    changeFunction: (text: string) => void
 }
 
 export interface modalProps {
@@ -80,6 +83,22 @@ export interface modalProps {
 }
 
 export interface rowContent {
+    key: string,
+    name: string | JSX.Element,
+    size?: number,
+    textAlign?: string,
+}
+
+export interface apiReality {
+    id_reality: number,
+    name: string,
+    max_power?: string,
+    sec_power?: string,
+    danger_zone?: string,
+    safe_zone?: string,
+}
+
+export interface realitiesTableData {
     key: string,
     name: string | JSX.Element,
     size?: number,
