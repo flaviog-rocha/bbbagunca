@@ -74,6 +74,7 @@ export interface inputProps {
     inputName: string,
     className?: string,
     value?: string,
+    error?: string,
     changeFunction: (text: string) => void
 }
 

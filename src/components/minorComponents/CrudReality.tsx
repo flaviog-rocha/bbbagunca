@@ -34,6 +34,11 @@ export default function CrudReality({infos, crudAction, setModal, setCrudReality
     }
 
     const saveReality = () => {
+        if (!realityName || realityName === ""){
+            setNameError("Nome do reality não pode ser vazio!")
+            return;
+        }
+        
         if (crudAction === "add"){
             addReality()
         }
@@ -47,6 +52,7 @@ export default function CrudReality({infos, crudAction, setModal, setCrudReality
     
     const [realityId, setRealityId] = useState<number>();
     const [realityName, setRealityName] = useState<string>("");
+    const [nameError, setNameError] = useState<string>("");
     const [maxPower, setmaxPower] = useState<string>("");
     const [secPower, setSecPower] = useState<string>("");
     const [dangerZone, setDangerZone] = useState<string>("");
@@ -70,7 +76,7 @@ export default function CrudReality({infos, crudAction, setModal, setCrudReality
                 saveReality();
                 }}
             >
-                <Input inputName="Nome do Reality" id="name" className="m-4" value={realityName} changeFunction={setRealityName}/>
+                <Input inputName="Nome do Reality" id="name" className="m-4" value={realityName} changeFunction={setRealityName} error={nameError}/>
                 <Input inputName="Poder Máximo" id="max-power" className="m-4" value={maxPower} changeFunction={setmaxPower}/>
                 <Input inputName="Poder Secundário" id="sec-power" className="m-4" value={secPower} changeFunction={setSecPower}/>
                 <Input inputName="Risco de Eliminação" id="danger-zone" className="m-4" value={dangerZone} changeFunction={setDangerZone}/>

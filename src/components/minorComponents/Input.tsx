@@ -1,6 +1,6 @@
 import { inputProps } from "@/utils/interfaces"
 
-export default function Input({inputName, id, className, value, changeFunction}: inputProps){
+export default function Input({inputName, id, className, value, error, changeFunction}: inputProps){
     return (
         <div className={className}>
             <label htmlFor={id} className="block pb-1">{inputName}</label>
@@ -13,6 +13,9 @@ export default function Input({inputName, id, className, value, changeFunction}:
                     changeFunction(`${e.target.value || ''}`)
                 }}
             />
+            {error && (
+                <div className="text-red-900 text-xs">{error}</div>
+            )}
         </div>
     )
 }
