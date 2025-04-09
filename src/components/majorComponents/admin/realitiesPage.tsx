@@ -1,5 +1,7 @@
 "use client"
 
+import { Slide, ToastContainer, toast } from "react-toastify"
+
 import Table from "@/components/minorComponents/Table"
 import { Roboto } from "next/font/google"
 import { useEffect, useState } from "react"
@@ -20,11 +22,17 @@ const robotoBlack = Roboto({
 export default function RealitiesPage(){
     // API CALLS
     const getRealities = async () => {
+        setIsLoading(true);
         const formatedTableData: realitiesTableData[][] = [];
         const res = await fetch("/api/reality", {
             method: "GET"
         });
         const datas = await res.json();
+
+        if (datas.hasOwnProperty("error")){
+            toast.error("Erro ao visualizar realities!")
+            return;
+        }
 
         datas?.forEach((data: apiReality, index: number) => {
             const lineData: realitiesTableData[] = Object.entries(data).map(([key, value]) => ({
@@ -38,6 +46,7 @@ export default function RealitiesPage(){
         })
 
         setTableData(formatedTableData)
+        setIsLoading(false);
     }
 
     const addReality = async (reality: crudReality) => {
@@ -56,7 +65,11 @@ export default function RealitiesPage(){
         })
 
         const data = await res.json()
-        console.log(data)
+
+        if (data.hasOwnProperty("error")){
+            toast.error("Erro ao adicionar reality!")
+            return;
+        }
 
         const lineData: realitiesTableData[] = Object.entries(data).map(([key, value]) => (
             {
@@ -68,10 +81,11 @@ export default function RealitiesPage(){
         lineData.push({key: "seasons", name: "1"})
         lineData.push({key: "actions", name: tableActions(tableData.length), textAlign: "right"})
         setTableData([...tableData, lineData])
+        toast.success("Reality adicionado com sucesso!")
     }
 
     const updateReality = async (reality: crudReality) => {
-        await fetch("/api/reality", {
+        const res = await fetch("/api/reality", {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -85,6 +99,15 @@ export default function RealitiesPage(){
                 safe_zone: reality.safe_zone,
             })
         })
+
+        const data = await res.json()
+
+        if (data.hasOwnProperty("error")){
+            toast.error("Erro ao editar reality!")
+            return;
+        }
+
+        toast.success("Reality editado com sucesso!")
     }
 
     const deleteReality = async (idReality: number) => {
@@ -94,6 +117,8 @@ export default function RealitiesPage(){
                 id_reality: idReality,
             })
         });
+
+        toast.success("Reality apagado com sucesso!")
     }
 
     // STATES
@@ -106,6 +131,7 @@ export default function RealitiesPage(){
     const [modalCrudContent, setModalCrudContent] = useState<realitiesTableData[] | ArrayConstructor>([]);
     const [crudResult, setCrudResult] = useState<crudReality>()
     const [deleteContent, setDeleteContent] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     // EFFECTS
     useEffect(() => {
@@ -150,9 +176,6 @@ export default function RealitiesPage(){
         }
     }, [deleteContent])
 
-    useEffect(() => {
-        console.log(tableData)
-    }, [tableData])
     useEffect(() => {
         if (crudResult){
             if (crudOperation === "add"){
@@ -219,6 +242,7 @@ export default function RealitiesPage(){
     // FINAL COMPONENT
     return(
         <div className="w-full">
+            <ToastContainer transition={Slide}/>
             {
                 openedModal ? (
                     <Modal 
@@ -250,7 +274,6 @@ export default function RealitiesPage(){
                                         key="confirmExcludeReality" 
                                         className="bg-red-400 p-2 rounded-xl hover:bg-red-600 hover:text-zinc-50"
                                         onClick={() => {
-                                            console.log("=====CLICOU NO BOTÃO!!!======")
                                             setDeleteContent(true)
                                         }}
                                     >
@@ -265,12 +288,11 @@ export default function RealitiesPage(){
             <div className={`w-full bg-purpleThemeTertiary h-12 flex items-center pl-5 text-xl rounded-tr-xl ${robotoBlack.className}`}>Realities</div>
             <div className="flex justify-center mt-12">
                 <div>
-                    <Table header={header} data={tableData}/>
+                    <Table header={header} data={tableData} isLoading={isLoading}/>
                     <div className="text-right">
                         <button 
                             className={`bg-mainThemePrimary p-3 text-zinc-200 mt-3 ${robotoBlack.className} hover:bg-mainThemeSecondary transition duration-200 rounded-xl`}
                             onClick={() => {
-                                    // setModalCrudContent(Array(0))
                                     setModalTitle("Adicionar Reality")
                                     setCrudOperation("add")
                                 }

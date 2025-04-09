@@ -1,7 +1,7 @@
 import { tableInterface } from "@/utils/interfaces";
 import { rowContent } from "@/utils/interfaces";
 
-export default function Table({header, data}: tableInterface){
+export default function Table({header, data, isLoading}: tableInterface){
     const tableHeader = (headerObj: rowContent[]) => {
         const header = [];
 
@@ -27,7 +27,21 @@ export default function Table({header, data}: tableInterface){
     const tableRows = (contents: rowContent[][] | undefined) => {
         const rowsData = [];
 
-        if (!contents || contents.length === 0){
+        if (isLoading){
+            rowsData.push(
+                <tr key="loading-line-warning">
+                    <td 
+                        key="empty-table-warning" 
+                        colSpan={header.length} 
+                        className="p-3 bg-purpleThemePrimary h-6 text-center"
+                    >
+                        Carregando...
+                    </td>
+                </tr>
+            )
+        }
+
+        else if (!contents || contents.length === 0){
             rowsData.push(
                 <tr key="empty-line-warning">
                     <td 

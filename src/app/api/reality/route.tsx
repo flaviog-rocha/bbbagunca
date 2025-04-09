@@ -90,7 +90,6 @@ export async function PUT(req: NextRequest){
             )
         }
         
-        console.log(id_reality)
         const updatedReality = await prisma.reality.update({
             where: {
                 id_reality
@@ -103,8 +102,6 @@ export async function PUT(req: NextRequest){
                 safe_zone,
             }
         });
-
-        console.log(updatedReality)
 
         return NextResponse.json(
             updatedReality, {status: 200}

@@ -59,6 +59,7 @@ export interface iconProps {
 export interface tableInterface {
     header: rowContent[],
     data?: rowContent[][],
+    isLoading: boolean,
 }
 
 export interface dataInterface {
