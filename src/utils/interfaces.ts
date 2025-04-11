@@ -12,6 +12,10 @@ export interface tagProperties {
     tag: string
 }
 
+export interface realityName {
+    index: string
+}
+
 export interface buttonProps {
     buttonString: string,
 } 
@@ -94,6 +98,7 @@ export interface rowContent {
 
 export interface apiReality {
     id_reality: number,
+    name_code: string,
     name: string,
     max_power?: string,
     sec_power?: string,

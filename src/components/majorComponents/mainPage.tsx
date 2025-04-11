@@ -2,6 +2,7 @@ import { JSX } from "react";
 import ProfileIcon from "@/components/minorComponents/ProfileIcon";
 import Carousel from "@/components/minorComponents/Carousel";
 import Article from "@/components/minorComponents/Article";
+import { realityName } from "@/utils/interfaces";
 
 function headerIcons(){
   let iconArray: JSX.Element[] = [];
@@ -17,7 +18,7 @@ function headerIcons(){
   return iconArray;
 }
 
-export default function MainPage(){
+export default function MainPage({index}: realityName){
   const iconArray = headerIcons();
 
   return (

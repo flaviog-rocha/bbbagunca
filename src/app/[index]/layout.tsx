@@ -41,7 +41,7 @@ export default function RootLayout({
         <header className={`${robotoBlack.className} text-zinc-300 text-3xl w-full h-16 flex justify-center`}>
           <Link 
             className="md:w-5/6 w-full h-16 bg-mainThemeDarker flex justify-center items-center hover:text-zinc-50 transition duration-500"
-            href="/"
+            href="/bbbagunca"
           >
             BBBAGUNÇA
           </Link>

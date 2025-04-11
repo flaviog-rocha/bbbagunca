@@ -8,7 +8,7 @@ import Image from 'next/image';
 
 export default function ProfileIcon({participantName}: name){
     return (
-        <Link href={`/participant/${participantName}`}>
+        <Link href={`/bbbagunca/participant/${participantName}`}>
            { /*eslint-disable-next-line @typescript-eslint/no-require-imports*/}
             <Image src={require(`../../../public/img/portraits/${participantName}.png`)} alt={"Participante Afrodite"} width={50} height={50}
                 className="peer w-8 h-8 lg:w-12 lg:h-12 hover:scale-125 hover:bg-indigo-200 transition duration-500 ease-in-out rounded-full bg-indigo-50 m-2 shrink-0 cursor-pointer"

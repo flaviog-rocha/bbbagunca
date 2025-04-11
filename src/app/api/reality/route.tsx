@@ -47,9 +47,11 @@ export async function POST(req: NextRequest){
             )
         }
 
+        const name_code = name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ç/g, 'c').replace(/ /g, "_")
         const reality = await prisma.reality.create({
             data: {
                 name,
+                name_code,
                 max_power,
                 sec_power,
                 danger_zone,
@@ -129,6 +131,7 @@ export async function DELETE(req: NextRequest){
         const body = await req.json();
         const {id_reality} = body;
 
+        console.log(id_reality)
         await prisma.reality.delete({
             where: {
                 id_reality

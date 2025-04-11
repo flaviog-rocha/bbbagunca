@@ -7,12 +7,13 @@ import { Roboto } from "next/font/google"
 import { useEffect, useState } from "react"
 import Modal from "@/components/minorComponents/Modal"
 import CrudReality from "@/components/minorComponents/CrudReality"
-import { mdiPen, mdiTrashCan } from "@mdi/js"
+import { mdiPen, mdiTrashCan, mdiArrowRight } from "@mdi/js"
 import Icon from "@mdi/react"
 import ConfirmModal from "@/components/minorComponents/ConfirmModal"
 import { getInfoKey } from "@/utils/objectFunctions"
 
 import { apiReality, realitiesTableData, crudReality } from "@/utils/interfaces"
+import Link from "next/link"
 
 const robotoBlack = Roboto({
   weight: "900",
@@ -34,14 +35,14 @@ export default function RealitiesPage(){
             return;
         }
 
-        datas?.forEach((data: apiReality, index: number) => {
+        datas?.forEach((data: apiReality) => {
             const lineData: realitiesTableData[] = Object.entries(data).map(([key, value]) => ({
                 key,
                 name: value,
             }))
             
             lineData.push({key: "seasons", name: "1"})
-            lineData.push({key: "actions", name: tableActions(index), textAlign: "right"})
+            lineData.push({key: "actions", name: tableActions(Number(getInfoKey(lineData, "id_reality")), getInfoKey(lineData, "name_code")), textAlign: "right"})
             formatedTableData.push(lineData)
         })
 
@@ -79,7 +80,7 @@ export default function RealitiesPage(){
         ))
 
         lineData.push({key: "seasons", name: "1"})
-        lineData.push({key: "actions", name: tableActions(tableData.length), textAlign: "right"})
+        lineData.push({key: "actions", name: tableActions(data.id_reality, data.name_code), textAlign: "right"})
         setTableData([...tableData, lineData])
         toast.success("Reality adicionado com sucesso!")
     }
@@ -139,11 +140,21 @@ export default function RealitiesPage(){
     }, [])
 
     useEffect(() => {
+        if (modalCrudIndex === -1){
+            setModalCrudContent([]);
+        }
         if (modalTitle && modalTitle !== ""){
-            setModalCrudContent(tableData[modalCrudIndex])
+            tableData.forEach((data) => {
+                data.forEach((property) => {
+                    if(property.key === "id_reality" && Number(property.name) === modalCrudIndex){
+                        setModalCrudContent(data);
+                        return;
+                    }
+                })
+            })
         }
  
-    }, [modalTitle])
+    }, [modalTitle, modalCrudIndex])
 
     useEffect(() => {
         if (modalTitle && modalTitle !== ""){
@@ -189,33 +200,50 @@ export default function RealitiesPage(){
     }, [crudResult])
 
     // OTHER FUNCTIONS
-    const actionButton = (icon: string, action: (() => void)) => {
+    const actionButton = (icon: string, title: string, action: (() => void)) => {
         return (
             <button 
                 className="px-2"
                 onClick={() => action()}
+                title={title ?? ""}
                 >
                     <Icon path={icon} size={0.8}/>
             </button>
         )
     }
 
-    const tableActions = (index: number) => {
+    const linkButton = (icon: string, title: string, newPage: string) => {
+        return (
+            <Link href={`/admin/reality/${newPage}`}>
+                <button 
+                    className="px-2"
+                    title={title ?? ""}
+                    >
+                        <Icon path={icon} size={0.8}/>
+                </button>
+            </Link>
+        )
+    }
+
+    const tableActions = (index: number, newPage: string) => {
         return (
             <>
                 {
-                    actionButton(mdiPen, () => {
+                    actionButton(mdiPen, "Editar reality", () => {
                         setModalTitle("Editar Reality")
                         setModalCrudIndex(index)
                         setCrudOperation("edit")
                     })
                 }
                 {
-                    actionButton(mdiTrashCan, () => {
+                    actionButton(mdiTrashCan, "Apagar reality", () => {
                         setModalTitle("Apagar Reality")
                         setModalCrudIndex(index)
                         setCrudOperation("delete")
                     })
+                }
+                {
+                    linkButton(mdiArrowRight, "Ver temporadas do reality", newPage)
                 }
             </>
         )
@@ -235,7 +263,7 @@ export default function RealitiesPage(){
         {
             key: "actions",
             name: "Ações",
-            size: 100,
+            size: 150,
         }
     ]
 
