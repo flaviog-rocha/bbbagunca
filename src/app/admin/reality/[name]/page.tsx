@@ -1,3 +1,4 @@
+import SeasonsPage from "@/components/majorComponents/admin/seasonsPage"
 export default async function FullArticle({
     params,
 }: {
@@ -5,8 +6,6 @@ export default async function FullArticle({
 }){    
     const name = (await params).name
     return (
-        <div>
-            {name}
-        </div>
+        <SeasonsPage seasonName={name}/>
     )
 }

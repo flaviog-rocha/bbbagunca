@@ -3,9 +3,12 @@ import { JSX } from "react"
 export interface name {
     participantName: string,
 }
-
 export interface id {
     id: number
+}
+
+export interface seasonName {
+    seasonName: string,
 }
 
 export interface tagProperties {
@@ -22,6 +25,12 @@ export interface buttonProps {
 
 export interface carouselPagesProps {
     isActive: boolean,
+}
+
+export interface checkboxProps {
+    state: boolean,
+    setState: (opened: boolean) => void,
+    text: string,
 }
 
 export interface infosInterface {
@@ -101,9 +110,9 @@ export interface apiReality {
     name_code: string,
     name: string,
     max_power?: string,
-    sec_power?: string,
-    danger_zone?: string,
-    safe_zone?: string,
+    sec_power?: string | null,
+    danger_zone?: string | null,
+    safe_zone?: string | null,
 }
 
 export interface realitiesTableData {

@@ -131,7 +131,6 @@ export async function DELETE(req: NextRequest){
         const body = await req.json();
         const {id_reality} = body;
 
-        console.log(id_reality)
         await prisma.reality.delete({
             where: {
                 id_reality
