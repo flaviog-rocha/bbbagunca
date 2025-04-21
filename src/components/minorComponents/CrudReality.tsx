@@ -12,7 +12,7 @@ const robotoBlack = Roboto({
 })
 
 export default function CrudReality({infos, crudAction, setModal, setCrudReality}: infosInterface){
-    const addReality = async () => {
+    const addReality = () => {
         setCrudReality({
             name: realityName,
             max_power: maxPower,
@@ -22,7 +22,7 @@ export default function CrudReality({infos, crudAction, setModal, setCrudReality
         })
     }
 
-    const updateReality = async () => {
+    const updateReality = () => {
         setCrudReality({
             id_reality: realityId,
             name: realityName,

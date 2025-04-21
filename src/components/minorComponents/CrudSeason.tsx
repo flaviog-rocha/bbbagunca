@@ -3,7 +3,7 @@
 import Input from "./Input";
 import { Roboto } from "next/font/google";
 import { getInfoKey } from "@/utils/objectFunctions";
-import { infosInterface } from "@/utils/interfaces";
+import { crudSeason } from "@/utils/interfaces";
 import { useEffect, useState } from "react";
 import Checkbox from "./Checkbox";
 
@@ -12,19 +12,17 @@ const robotoBlack = Roboto({
   subsets: ["latin"],
 })
 
-export default function CrudSeason({infos, crudAction, setModal, setCrudReality}: infosInterface){
-    // const addReality = async () => {
-    //     setCrudReality({
-    //         name: realityName,
-    //         max_power: maxPower,
-    //         sec_power: secPower,
-    //         danger_zone: dangerZone,
-    //         safe_zone: safeZone,
-    //     })
-    // }
+export default function CrudSeason({infos, crudAction, setModal, setCrudSeason}: crudSeason){
+    const addSeason = () => {
+        setCrudSeason({
+            season_number: Number(seasonNumber),
+            codiname: codiname,
+            current: currentSeason
+        })
+    }
 
     // const updateReality = async () => {
-    //     setCrudReality({
+    //     setCrud({
     //         id_reality: realityId,
     //         name: realityName,
     //         max_power: maxPower,
@@ -40,14 +38,14 @@ export default function CrudSeason({infos, crudAction, setModal, setCrudReality}
             return;
         }
 
-        else if (/^\d+$/.test(seasonNumber)){
+        else if (!/^\d+$/.test(seasonNumber)){
             setSeasonNumberError("Campo deve ser um valor numérico!")
             return;
         }
         
-        // if (crudAction === "add"){
-        //     addReality()
-        // }
+        if (crudAction === "add"){
+            addSeason()
+        }
 
         // else {
         //     updateReality()
@@ -77,7 +75,7 @@ export default function CrudSeason({infos, crudAction, setModal, setCrudReality}
         <div className="justify-center flex">
             <form className="" onSubmit={(e) => {
                 e.preventDefault()
-                // saveReality();
+                saveReality();
                 }}
             >
                 <Input inputName="Número da Temporada" id="name" className="m-4" value={seasonNumber} changeFunction={setSeasonNumber} error={seasonNumberError}/>

@@ -1,46 +1,138 @@
 "use client"
 
+import { Slide, ToastContainer, toast } from "react-toastify"
+
 import Table from "@/components/minorComponents/Table";
-import { apiReality, realitiesTableData, seasonName } from "@/utils/interfaces";
+import { apiReality, crudSeason, crudSeasonInfos, realitiesTableData, realityName } from "@/utils/interfaces";
 import { Roboto } from "next/font/google";
 import Modal from "@/components/minorComponents/Modal";
 import { useState, useEffect } from "react";
-import { mdiPen, mdiTrashCan, mdiArrowRight } from "@mdi/js"
+import { mdiPen, mdiCheckCircle, mdiCloseCircle, mdiTrashCan, mdiArrowRight } from "@mdi/js"
 import CrudSeason from "@/components/minorComponents/CrudSeason";
 import Icon from "@mdi/react"
-
-import { crudReality } from "@/utils/interfaces";
+import LoadingIcon from "@/components/minorComponents/LoadingIcon";
 
 const robotoBlack = Roboto({
   weight: "900",
   subsets: ["latin"],
 })
 
-export default function SeasonsPage({seasonName}: seasonName){
+export default function SeasonsPage({index}: realityName){
     // API CALLS 
     const getReality = async () => {
-        const res = await fetch(`/api/reality/${seasonName}`, {
+        const res = await fetch(`/api/reality/${index}`, {
             method: "GET"
         });
         const data = await res.json();
 
+        if (!data){
+            toast.error("Reality não encontrado!")
+            return;
+        }
+
         setReality(data)
+        getSeasons();
+    }
+
+    const getSeasons = async () => {
+        const formatedTableData: realitiesTableData[][] = [];
+        const res = await fetch(`/api/reality/${index}/seasons`)
+
+        const datas = await res.json();
+
+        if (datas.hasOwnProperty("error")){
+            toast.error("Erro ao visualizar temporadas!")
+            return;
+        }
+
         setPageLoading(false)
+
+        datas?.forEach((data: crudSeasonInfos) => {
+            const lineData: realitiesTableData[] = Object.entries(data).map(([key, value]) => ({
+                key,
+                name: value as string,
+                textAlign: "center"
+            }))
+            
+            lineData.push({key: "currentSeason", name: currentSymbol(false)})
+            console.log(lineData)
+            // lineData.push({key: "seasons", name: "1"})
+            // lineData.push({key: "actions", name: tableActions(Number(getInfoKey(lineData, "id_reality")), getInfoKey(lineData, "name_code")), textAlign: "right"})
+            formatedTableData.push(lineData)
+        })
+
+        setTableData(formatedTableData)
+    }
+
+    const addSeason = async (season: crudSeasonInfos) => {
+        const res = await fetch(`/api/reality/${index}/seasons`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                season_number: season.season_number,
+                codiname: season.codiname,
+                current: season.current,
+            })
+        })
+
+        const data = await res.json()
+
+        if (data.hasOwnProperty("error")){
+            toast.error("Erro ao adicionar reality!")
+            return;
+        }
+
+        const lineData: realitiesTableData[] = Object.entries(data).map(([key, value]) => (
+            {
+                key,
+                name: value as string,
+            }
+        ))
+
+        // lineData.push({key: "seasons", name: "1"})
+        // lineData.push({key: "actions", name: tableActions(data.id_reality, data.name_code)})
+        // setTableData([...tableData, lineData])
+        toast.success("Reality adicionado com sucesso!")
     }
     // STATES
+    const [tableData, setTableData] = useState<realitiesTableData[][]>([]);
     const [pageLoading, setPageLoading] = useState<boolean>(true)
     const [reality, setReality] = useState<apiReality>();
     const [openedModal, setOpenedModal] = useState<boolean>(false);
     const [modalCrudContent, setModalCrudContent] = useState<realitiesTableData[] | ArrayConstructor>([]);
     const [modalTitle, setModalTitle] = useState<string>("");
     const [crudOperation, setCrudOperation] = useState<string>("add");
-    const [crudResult, setCrudResult] = useState<crudReality>()
+    const [crudResult, setCrudResult] = useState<crudSeasonInfos>()
     const [modalCrudIndex, setModalCrudIndex] = useState<number>(-1);
     
     // EFFECTS
     useEffect(() => {
         getReality();
     }, [])
+
+    useEffect(() => {
+        if (crudResult){
+            if (crudOperation === "add"){
+                addSeason(crudResult)
+            }
+
+            // else if (crudOperation === "edit"){
+            //     updateReality(crudResult)
+            // }
+        }
+    }, [crudResult])
+
+    const currentSymbol = (current: boolean) => {
+        return (
+            <div className="flex justify-center">
+                {          
+                    current ? <Icon path={mdiCheckCircle} size={1.2} className="text-green-700"></Icon> : <Icon path={mdiCloseCircle} className="text-red-700" size={1.2}></Icon>
+                }
+            </div>
+        )
+    }
 
     const actionButton = (icon: string, title: string, action: (() => void)) => {
         return (
@@ -54,11 +146,35 @@ export default function SeasonsPage({seasonName}: seasonName){
         )
     }
 
+    const tableActions = (index: number, newPage: string) => {
+        return (
+            <>
+                {
+                    actionButton(mdiPen, "Editar temporada", () => {
+                        setModalTitle("Editar temporada")
+                        setModalCrudIndex(index)
+                        setCrudOperation("edit")
+                    })
+                }
+                {/* {
+                    actionButton(mdiTrashCan, "Apagar reality", () => {
+                        setModalTitle("Apagar Reality")
+                        setModalCrudIndex(index)
+                        setCrudOperation("delete")
+                    })
+                } */}
+                {/* {
+                    linkButton(mdiArrowRight, "Ver temporadas do reality", newPage)
+                } */}
+            </>
+        )
+    }
+
     const header: realitiesTableData[] = [
         {
-            key: "seasonId",
+            key: "season_number",
             name: "Temporada",
-            size: 200,
+            size: 100,
         },
         {
             key: "codename",
@@ -71,66 +187,71 @@ export default function SeasonsPage({seasonName}: seasonName){
             size: 100,
         },
         {
+            key: "currentSeason",
+            name: "Em andamento",
+            size: 100,
+        },
+        {
             key: "actions",
             name: "Ações",
             size: 150,
         }
     ]
 
-    const data: realitiesTableData[][] = [
-        [
-            {
-                key: "seasonId",
-                name: "4",
-                textAlign: "center"
-            },
-            {
-                key: "codename",
-                name: "Revival",
-                textAlign: "center"
-            },
-            {
-                key: "participants",
-                name: "32",
-                textAlign: "center"
-            },
-            {
-                key: "actions",
-                name: actionButton(mdiPen, "Editar reality", () => {
-                    setModalTitle("Editar Reality")
-                    setModalCrudIndex(0)
-                    setCrudOperation("edit")
-                }),
-                textAlign: "center"
-            }
-        ],
-        [
-            {
-                key: "seasonId",
-                name: "3",
-                textAlign: "center"
-            },
-            {
-                key: "participants",
-                name: "24",
-                textAlign: "center"
-            },
-            {
-                key: "actions",
-                name: actionButton(mdiPen, "Editar reality", () => {
-                    setModalTitle("Editar Reality")
-                    setModalCrudIndex(0)
-                    setCrudOperation("edit")
-                }),
-                textAlign: "center"
-            }
-        ]
+    // const data: realitiesTableData[][] = [
+    //     [
+    //         {
+    //             key: "season_number",
+    //             name: "4",
+    //             textAlign: "center"
+    //         },
+    //         {
+    //             key: "codename",
+    //             name: "Revival",
+    //             textAlign: "center"
+    //         },
+    //         {
+    //             key: "participants",
+    //             name: "32",
+    //             textAlign: "center"
+    //         },
+    //         {
+    //             key: "actions",
+    //             name: actionButton(mdiPen, "Editar reality", () => {
+    //                 setModalTitle("Editar Reality")
+    //                 setModalCrudIndex(0)
+    //                 setCrudOperation("edit")
+    //             }),
+    //             textAlign: "center"
+    //         }
+    //     ],
+    //     [
+    //         {
+    //             key: "season_number",
+    //             name: "3",
+    //             textAlign: "center"
+    //         },
+    //         {
+    //             key: "participants",
+    //             name: "24",
+    //             textAlign: "center"
+    //         },
+    //         {
+    //             key: "actions",
+    //             name: actionButton(mdiPen, "Editar reality", () => {
+    //                 setModalTitle("Editar Reality")
+    //                 setModalCrudIndex(0)
+    //                 setCrudOperation("edit")
+    //             }),
+    //             textAlign: "center"
+    //         }
+    //     ]
 
-    ]
+    // ]
     
     return (
         <div className="w-full h-full">
-            {/* <ToastContainer transition={Slide}/> */}
+            <ToastContainer transition={Slide}/>
             {
                 openedModal ? (
                     <Modal 
@@ -138,7 +259,7 @@ export default function SeasonsPage({seasonName}: seasonName){
                         setModal={setOpenedModal}
                     >
                         {/* <CrudSeason infos={modalCrudContent} crudAction={crudOperation} setModal={setOpenedModal} setCrudReality={setCrudResult}/> */}
-                        <CrudSeason infos={modalCrudContent} crudAction={crudOperation} setModal={setOpenedModal} setCrudReality={setCrudResult}/>
+                        <CrudSeason infos={modalCrudContent} crudAction={crudOperation} setModal={setOpenedModal} setCrudSeason={setCrudResult}/>
                     </Modal>
                 ) : <></>
             }
@@ -178,7 +299,7 @@ export default function SeasonsPage({seasonName}: seasonName){
                 <div className={`w-full bg-purpleThemeTertiary h-12 flex items-center pl-5 text-xl rounded-tr-xl ${robotoBlack.className}`}>Temporadas de {reality?.name}</div>
                 <div className="flex justify-center mt-12">
                     <div>
-                        <Table header={header} data={data} isLoading={false}/>
+                        <Table header={header} data={tableData}/>
                         <div className="text-right">
                             <button 
                                 className={`bg-mainThemePrimary p-3 text-zinc-200 mt-3 ${robotoBlack.className} hover:bg-mainThemeSecondary transition duration-200 rounded-xl`}
@@ -197,10 +318,7 @@ export default function SeasonsPage({seasonName}: seasonName){
             </>) 
             : 
             <div className="h-full flex justify-center items-center">
-                <svg aria-hidden="true" className="w-8 h-8 text-mainThemeDarker animate-spin dark:text-gray-600 fill-mainThemeLighter" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-                    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
-                </svg>
+                <LoadingIcon/>
             </div>
             }
         </div>

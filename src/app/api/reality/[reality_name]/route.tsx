@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export async function GET(req: Response,
-    {params}: {params: {name: string}}
+    {params}: {params: {reality_name: string}}
 ){
 
     if (!process.env.DATABASE_URL){
@@ -17,7 +17,7 @@ export async function GET(req: Response,
     try {
         const reality = await prisma.reality.findUnique({
             where: {
-                name_code: params.name
+                name_code: params.reality_name
             }
         });
         return NextResponse.json(reality, {status: 200});

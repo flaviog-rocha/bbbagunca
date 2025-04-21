@@ -1,5 +1,6 @@
 import { tableInterface } from "@/utils/interfaces";
 import { rowContent } from "@/utils/interfaces";
+import LoadingIcon from "./LoadingIcon";
 
 export default function Table({header, data, isLoading}: tableInterface){
     const tableHeader = (headerObj: rowContent[]) => {
@@ -33,9 +34,12 @@ export default function Table({header, data, isLoading}: tableInterface){
                     <td 
                         key="empty-table-warning" 
                         colSpan={header.length} 
-                        className="p-3 bg-purpleThemePrimary h-6 text-center"
+                        className="p-3 bg-purpleThemePrimary h-6"
                     >
-                        Carregando...
+                        <div className="flex justify-center">
+                            <LoadingIcon/>
+                        </div>
+                        
                     </td>
                 </tr>
             )

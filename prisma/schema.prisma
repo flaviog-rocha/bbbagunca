@@ -22,6 +22,7 @@ model Season {
   id_season     Int     @id @default(autoincrement())
   id_reality    Int
   codename      String?
+  current       Boolean @default(false)
   season_number Int
   reality       Reality @relation(fields: [id_reality], references: [id_reality])
 }

@@ -6,6 +6,6 @@ export default async function FullArticle({
 }){    
     const name = (await params).name
     return (
-        <SeasonsPage seasonName={name}/>
+        <SeasonsPage index={name}/>
     )
 }
