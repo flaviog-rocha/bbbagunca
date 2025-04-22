@@ -16,21 +16,19 @@ export default function CrudSeason({infos, crudAction, setModal, setCrudSeason}:
     const addSeason = () => {
         setCrudSeason({
             season_number: Number(seasonNumber),
-            codiname: codiname,
+            codename: codename,
             current: currentSeason
         })
     }
 
-    // const updateReality = async () => {
-    //     setCrud({
-    //         id_reality: realityId,
-    //         name: realityName,
-    //         max_power: maxPower,
-    //         sec_power: secPower,
-    //         danger_zone: dangerZone,
-    //         safe_zone: safeZone,
-    //     })
-    // }
+    const updateReality = async () => {
+        setCrudSeason({
+            id_season: Number(seasonId),
+            season_number: Number(seasonNumber),
+            codename: codename,
+            current: currentSeason
+        })
+    }
 
     const saveReality = () => {
         if (!seasonNumber || seasonNumber === ""){
@@ -47,9 +45,9 @@ export default function CrudSeason({infos, crudAction, setModal, setCrudSeason}:
             addSeason()
         }
 
-        // else {
-        //     updateReality()
-        // }
+        else {
+            updateReality()
+        }
 
         setModal(false)
     }
@@ -57,19 +55,17 @@ export default function CrudSeason({infos, crudAction, setModal, setCrudSeason}:
     const [seasonId, setSeasonId] = useState<number>();
     const [seasonNumber, setSeasonNumber] = useState<string>("");
     const [seasonNumberError, setSeasonNumberError] = useState<string>("");
-    const [codiname, setCodiname] = useState<string>("");
+    const [codename, setCodename] = useState<string>("");
     const [currentSeason, setCurrentSeason] = useState<boolean>(false);
 
-    // useEffect(() => {
-    //     if (infos){
-    //         setRealityId(Number(getInfoKey(infos, "id_reality")))
-    //         setRealityName(getInfoKey(infos, "name"));
-    //         setmaxPower(getInfoKey(infos, "max_power"));
-    //         setSecPower(getInfoKey(infos, "sec_power"));
-    //         setDangerZone(getInfoKey(infos, "danger_zone"));
-    //         setSafeZone(getInfoKey(infos, "safe_zone"));
-    //     }
-    // }, [])
+    useEffect(() => {
+        if (infos){
+            setSeasonId(Number(getInfoKey(infos, "id_season")))
+            setSeasonNumber(getInfoKey(infos, "season_number"));
+            setCodename(getInfoKey(infos, "codename"));
+            setCurrentSeason(getInfoKey(infos, "current") === 'true');
+        }
+    }, [])
 
     return (
         <div className="justify-center flex">
@@ -79,7 +75,7 @@ export default function CrudSeason({infos, crudAction, setModal, setCrudSeason}:
                 }}
             >
                 <Input inputName="Número da Temporada" id="name" className="m-4" value={seasonNumber} changeFunction={setSeasonNumber} error={seasonNumberError}/>
-                <Input inputName="Codinome" id="max-power" className="m-4" value={codiname} changeFunction={setCodiname}/>
+                <Input inputName="Codinome" id="max-power" className="m-4" value={codename} changeFunction={setCodename}/>
                 <div className="flex justify-end pr-6">
                     <Checkbox state={currentSeason} setState={setCurrentSeason} text="Temporada Atual?"/>
                 </div>

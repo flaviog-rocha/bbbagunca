@@ -39,6 +39,20 @@ export interface infosInterface {
     setModal: (opened: boolean) => void,
     setCrudReality: (data: crudReality) => void,
 }
+
+export interface crudSeasonInfos {
+    id_season?: number,
+    season_number: number,
+    codename: string,
+    current: boolean,
+}
+
+export interface crudSeason {
+    infos: dataInterface[] | ArrayConstructor,
+    crudAction: string,
+    setModal: (opened: boolean) => void,
+    setCrudSeason: (data: crudSeasonInfos) => void,
+}
 export interface carouselProps {
     title: string,
     subtitle: string,
@@ -72,7 +86,7 @@ export interface iconProps {
 export interface tableInterface {
     header: rowContent[],
     data?: rowContent[][],
-    isLoading: boolean,
+    isLoading?: boolean,
 }
 
 export interface dataInterface {

@@ -107,7 +107,7 @@ export default function RootLayout({
               </div>
               {optionsList(sidebarOptions)}
             </div>
-            <div className="h-full w-full">
+            <div className="h-full w-full overflow-x-auto">
               {children}
             </div>
           </div>

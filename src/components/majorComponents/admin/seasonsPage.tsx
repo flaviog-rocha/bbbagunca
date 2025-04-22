@@ -8,9 +8,11 @@ import { Roboto } from "next/font/google";
 import Modal from "@/components/minorComponents/Modal";
 import { useState, useEffect } from "react";
 import { mdiPen, mdiCheckCircle, mdiCloseCircle, mdiTrashCan, mdiArrowRight } from "@mdi/js"
+import ConfirmModal from "@/components/minorComponents/ConfirmModal"
 import CrudSeason from "@/components/minorComponents/CrudSeason";
 import Icon from "@mdi/react"
 import LoadingIcon from "@/components/minorComponents/LoadingIcon";
+import { getInfoKey } from "@/utils/objectFunctions";
 
 const robotoBlack = Roboto({
   weight: "900",
@@ -54,10 +56,9 @@ export default function SeasonsPage({index}: realityName){
                 textAlign: "center"
             }))
             
-            lineData.push({key: "currentSeason", name: currentSymbol(false)})
-            console.log(lineData)
+            lineData.push({key: "currentSeason", name: currentSymbol(data.current)})
             // lineData.push({key: "seasons", name: "1"})
-            // lineData.push({key: "actions", name: tableActions(Number(getInfoKey(lineData, "id_reality")), getInfoKey(lineData, "name_code")), textAlign: "right"})
+            lineData.push({key: "actions", name: tableActions(Number(getInfoKey(lineData, "id_season")), getInfoKey(lineData, "name_code")), textAlign: "right"})
             formatedTableData.push(lineData)
         })
 
@@ -72,7 +73,7 @@ export default function SeasonsPage({index}: realityName){
             },
             body: JSON.stringify({
                 season_number: season.season_number,
-                codiname: season.codiname,
+                codename: season.codename,
                 current: season.current,
             })
         })
@@ -88,14 +89,64 @@ export default function SeasonsPage({index}: realityName){
             {
                 key,
                 name: value as string,
+                textAlign: 'center',
             }
         ))
 
+        lineData.push({key: "currentSeason", name: currentSymbol(data.current)})
+        // lineData.push({key: "seasons", name: "1"})
+        // lineData.push({key: "actions", name: tableActions(data.id_reality, data.name_code)})
+        setTableData([...tableData, lineData])
+        toast.success("Reality adicionado com sucesso!")
+    }
+
+    const updateSeason = async (season: crudSeasonInfos) => {
+        const res = await fetch(`/api/reality/${index}/seasons`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                id_season: season.id_season,
+                season_number: season.season_number,
+                codename: season.codename,
+                current: season.current,
+            })
+        })
+
+        const data = await res.json()
+
+        if (data.hasOwnProperty("error")){
+            toast.error("Erro ao atualizar reality!")
+            return;
+        }
+
+        // const lineData: realitiesTableData[] = Object.entries(data).map(([key, value]) => (
+        //     {
+        //         key,
+        //         name: value as string,
+        //         textAlign: 'center',
+        //     }
+        // ))
+
+        // lineData.push({key: "currentSeason", name: currentSymbol(data.current)})
         // lineData.push({key: "seasons", name: "1"})
         // lineData.push({key: "actions", name: tableActions(data.id_reality, data.name_code)})
         // setTableData([...tableData, lineData])
-        toast.success("Reality adicionado com sucesso!")
+        toast.success("Reality atualizado com sucesso!")
     }
+
+    const deleteReality = async (idSeason: number) => {
+        await fetch(`/api/reality/${index}/seasons`, {
+            method: "DELETE",
+            body: JSON.stringify({
+                id_season: idSeason,
+            })
+        });
+
+        toast.success("Reality apagado com sucesso!")
+    }
+
     // STATES
     const [tableData, setTableData] = useState<realitiesTableData[][]>([]);
     const [pageLoading, setPageLoading] = useState<boolean>(true)
@@ -106,6 +157,8 @@ export default function SeasonsPage({index}: realityName){
     const [crudOperation, setCrudOperation] = useState<string>("add");
     const [crudResult, setCrudResult] = useState<crudSeasonInfos>()
     const [modalCrudIndex, setModalCrudIndex] = useState<number>(-1);
+    const [deleteContent, setDeleteContent] = useState<boolean>(false);
+    const [openedDeleteModal, setOpenedDeleteModal] = useState<boolean>(false);
     
     // EFFECTS
     useEffect(() => {
@@ -113,16 +166,67 @@ export default function SeasonsPage({index}: realityName){
     }, [])
 
     useEffect(() => {
+        if (modalCrudIndex === -1){
+            setModalCrudContent([]);
+        }
+        if (modalTitle && modalTitle !== ""){
+            console.log(`ModalCrudIndex: ${modalCrudIndex}`)
+            tableData.forEach((data) => {
+                data.forEach((property) => {
+                    if(property.key === "id_season" && Number(property.name) === modalCrudIndex){
+                        setModalCrudContent(data);
+                        return;
+                    }
+                })
+            })
+        }
+ 
+    }, [modalTitle, modalCrudIndex])
+
+    useEffect(() => {
         if (crudResult){
             if (crudOperation === "add"){
                 addSeason(crudResult)
             }
 
-            // else if (crudOperation === "edit"){
-            //     updateReality(crudResult)
-            // }
+            else if (crudOperation === "edit"){
+                updateSeason(crudResult)
+            }
         }
     }, [crudResult])
+
+    useEffect(() => {
+        console.log("Modal Crud Content:")
+        console.log(modalCrudContent)
+        if (modalTitle && modalTitle !== ""){
+            if (crudOperation === "add" || crudOperation === "edit"){
+                setOpenedModal(true)
+            }
+            else {
+                setOpenedDeleteModal(true)
+            }
+        }
+        
+    }, [modalCrudContent, modalTitle, crudOperation])
+
+    useEffect(() => {
+        if (deleteContent){
+            deleteReality(Number(getInfoKey(modalCrudContent, "id_season")));
+            setTableData(() => 
+                tableData.filter((data) => Number(getInfoKey(modalCrudContent, "id_season")) !== Number(getInfoKey(data, "id_season")))
+            )
+            setDeleteContent(false);
+            setOpenedDeleteModal(false);
+        }
+    }, [deleteContent])
+
+    useEffect(() => {
+        if (!openedModal && !openedDeleteModal){
+            setModalCrudIndex(-1)
+            setModalTitle("")
+        }
+        
+    }, [openedModal, openedDeleteModal])
 
     const currentSymbol = (current: boolean) => {
         return (
@@ -156,13 +260,13 @@ export default function SeasonsPage({index}: realityName){
                         setCrudOperation("edit")
                     })
                 }
-                {/* {
-                    actionButton(mdiTrashCan, "Apagar reality", () => {
-                        setModalTitle("Apagar Reality")
+                {
+                    actionButton(mdiTrashCan, "Apagar temporada", () => {
+                        setModalTitle("Apagar temporada")
                         setModalCrudIndex(index)
                         setCrudOperation("delete")
                     })
-                } */}
+                }
                 {/* {
                     linkButton(mdiArrowRight, "Ver temporadas do reality", newPage)
                 } */}
@@ -197,57 +301,6 @@ export default function SeasonsPage({index}: realityName){
             size: 150,
         }
     ]
-
-    // const data: realitiesTableData[][] = [
-    //     [
-    //         {
-    //             key: "season_number",
-    //             name: "4",
-    //             textAlign: "center"
-    //         },
-    //         {
-    //             key: "codename",
-    //             name: "Revival",
-    //             textAlign: "center"
-    //         },
-    //         {
-    //             key: "participants",
-    //             name: "32",
-    //             textAlign: "center"
-    //         },
-    //         {
-    //             key: "actions",
-    //             name: actionButton(mdiPen, "Editar reality", () => {
-    //                 setModalTitle("Editar Reality")
-    //                 setModalCrudIndex(0)
-    //                 setCrudOperation("edit")
-    //             }),
-    //             textAlign: "center"
-    //         }
-    //     ],
-    //     [
-    //         {
-    //             key: "season_number",
-    //             name: "3",
-    //             textAlign: "center"
-    //         },
-    //         {
-    //             key: "participants",
-    //             name: "24",
-    //             textAlign: "center"
-    //         },
-    //         {
-    //             key: "actions",
-    //             name: actionButton(mdiPen, "Editar reality", () => {
-    //                 setModalTitle("Editar Reality")
-    //                 setModalCrudIndex(0)
-    //                 setCrudOperation("edit")
-    //             }),
-    //             textAlign: "center"
-    //         }
-    //     ]
-
-    // ]
     
     return (
         <div className="w-full h-full">
@@ -263,14 +316,14 @@ export default function SeasonsPage({index}: realityName){
                     </Modal>
                 ) : <></>
             }
-            {/* {
+            {
                 openedDeleteModal ? (
                     <Modal 
                         title={modalTitle}
                         setModal={setOpenedDeleteModal}
                     >
                         <ConfirmModal 
-                            message={`Deseja apagar o reality ${getInfoKey(modalCrudContent, "name")} permanentemente?`}
+                            message={`Deseja apagar a temporada ${getInfoKey(modalCrudContent, "season_number")} permanentemente?`}
                             buttons={
                                 [
                                     <button 
@@ -294,7 +347,7 @@ export default function SeasonsPage({index}: realityName){
                         />
                     </Modal>
                 ) : <></>
-            } */}
+            }
             {!pageLoading ? (<>
                 <div className={`w-full bg-purpleThemeTertiary h-12 flex items-center pl-5 text-xl rounded-tr-xl ${robotoBlack.className}`}>Temporadas de {reality?.name}</div>
                 <div className="flex justify-center mt-12">
@@ -306,7 +359,6 @@ export default function SeasonsPage({index}: realityName){
                                 onClick={() => {
                                         setModalTitle("Adicionar Temporada")
                                         setCrudOperation("add")
-                                        setOpenedModal(true)
                                     }
                                 }
                             >
@@ -322,10 +374,5 @@ export default function SeasonsPage({index}: realityName){
             </div>
             }
         </div>
-        // <>
-        //     <div>
-        //         <Table header={header} data={data} isLoading={false}/>
-        //     </div>
-        // </>
     )
 }

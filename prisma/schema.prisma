@@ -25,4 +25,6 @@ model Season {
   current       Boolean @default(false)
   season_number Int
   reality       Reality @relation(fields: [id_reality], references: [id_reality])
+
+  @@unique([season_number, id_reality])
 }
