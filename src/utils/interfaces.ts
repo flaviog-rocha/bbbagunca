@@ -83,6 +83,11 @@ export interface iconProps {
     name: string,
 }
 
+export interface castInfo {
+    realityName: string,
+    seasonNumber: string,
+}
+
 export interface tableInterface {
     header: rowContent[],
     data?: rowContent[][],

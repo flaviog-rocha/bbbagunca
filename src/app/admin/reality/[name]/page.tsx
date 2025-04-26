@@ -1,5 +1,5 @@
 import SeasonsPage from "@/components/majorComponents/admin/seasonsPage"
-export default async function FullArticle({
+export default async function Seasons({
     params,
 }: {
     params: Promise<{name: string}>

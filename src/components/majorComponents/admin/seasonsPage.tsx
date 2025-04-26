@@ -2,12 +2,14 @@
 
 import { Slide, ToastContainer, toast } from "react-toastify"
 
+import Link from "next/link";
+
 import Table from "@/components/minorComponents/Table";
-import { apiReality, crudSeason, crudSeasonInfos, realitiesTableData, realityName } from "@/utils/interfaces";
+import { apiReality, crudSeasonInfos, realitiesTableData, realityName } from "@/utils/interfaces";
 import { Roboto } from "next/font/google";
 import Modal from "@/components/minorComponents/Modal";
 import { useState, useEffect } from "react";
-import { mdiPen, mdiCheckCircle, mdiCloseCircle, mdiTrashCan, mdiArrowRight } from "@mdi/js"
+import { mdiPen, mdiCheckCircle, mdiCloseCircle, mdiTrashCan, mdiHumanQueue } from "@mdi/js"
 import ConfirmModal from "@/components/minorComponents/ConfirmModal"
 import CrudSeason from "@/components/minorComponents/CrudSeason";
 import Icon from "@mdi/react"
@@ -57,8 +59,8 @@ export default function SeasonsPage({index}: realityName){
             }))
             
             lineData.push({key: "currentSeason", name: currentSymbol(data.current)})
-            // lineData.push({key: "seasons", name: "1"})
-            lineData.push({key: "actions", name: tableActions(Number(getInfoKey(lineData, "id_season")), getInfoKey(lineData, "name_code")), textAlign: "right"})
+            lineData.push({key: "cast", name: castButton(data.season_number), textAlign: "center"})
+            lineData.push({key: "actions", name: tableActions(Number(getInfoKey(lineData, "id_season"))), textAlign: "right"})
             formatedTableData.push(lineData)
         })
 
@@ -250,7 +252,16 @@ export default function SeasonsPage({index}: realityName){
         )
     }
 
-    const tableActions = (index: number, newPage: string) => {
+    const castButton = (season: number) => {
+        return (
+            <Link href={`/admin/reality/${index}/${season}/cast`}>
+                <button>
+                    <Icon path={mdiHumanQueue} size={0.8}/>
+                </button>
+            </Link>
+        )
+    }
+    const tableActions = (index: number) => {
         return (
             <>
                 {
@@ -267,9 +278,6 @@ export default function SeasonsPage({index}: realityName){
                         setCrudOperation("delete")
                     })
                 }
-                {/* {
-                    linkButton(mdiArrowRight, "Ver temporadas do reality", newPage)
-                } */}
             </>
         )
     }
@@ -286,8 +294,8 @@ export default function SeasonsPage({index}: realityName){
             size: 300,
         },
         {
-            key: "participants",
-            name: "Participantes",
+            key: "cast",
+            name: "Elenco",
             size: 100,
         },
         {
@@ -311,7 +319,6 @@ export default function SeasonsPage({index}: realityName){
                         title={modalTitle}
                         setModal={setOpenedModal}
                     >
-                        {/* <CrudSeason infos={modalCrudContent} crudAction={crudOperation} setModal={setOpenedModal} setCrudReality={setCrudResult}/> */}
                         <CrudSeason infos={modalCrudContent} crudAction={crudOperation} setModal={setOpenedModal} setCrudSeason={setCrudResult}/>
                     </Modal>
                 ) : <></>

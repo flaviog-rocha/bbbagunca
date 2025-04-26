@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export default function GET(){
+export async function GET(){
     if (!process.env.DATABASE_URL){
         return NextResponse.json(
             {error: "DATABASE-NOT-SET"},
@@ -12,7 +12,7 @@ export default function GET(){
     }
 
     try {
-        const currentSeason = prisma.season.findFirst({
+        const currentSeason = await prisma.season.findFirst({
             where: {
                 current: true
             }
