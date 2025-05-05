@@ -6,8 +6,8 @@ import { mdiClose } from "@mdi/js"
 export default function Modal({children, title, width, height, setModal}: React.PropsWithChildren<modalProps>){
     return(
         <div>
-            <div className="w-screen h-screen bg-black absolute top-0 right-0 opacity-60" ></div>
-            <div className="w-screen h-screen flex absolute top-0 right-0 justify-center items-center" 
+            <div className="w-screen h-screen bg-black absolute top-0 right-0 opacity-60 z-10" ></div>
+            <div className="w-screen h-screen flex absolute top-0 right-0 justify-center items-center z-20" 
                 id="modal-background"
                 onClick={(e) => {
                     if(e.target.id === "modal-background"){

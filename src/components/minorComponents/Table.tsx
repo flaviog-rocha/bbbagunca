@@ -90,7 +90,8 @@ export default function Table({header, data, isLoading}: tableInterface){
     };
 
     return (
-        <table className="border border-collapse border-mainThemePrimary">
+        <div className="h-3/4 overflow-y-auto">
+            <table className="border border-collapse border-mainThemePrimary">
             <thead>
                 <tr>
                     {tableHeader(header)}
@@ -100,5 +101,7 @@ export default function Table({header, data, isLoading}: tableInterface){
                 {tableRows(data)}
             </tbody>
         </table>
+        </div>
+        
     )
 }

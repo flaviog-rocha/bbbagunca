@@ -9,7 +9,10 @@ import { apiReality, castInfo, crudSeasonInfos, realitiesTableData } from "@/uti
 import LoadingIcon from "@/components/minorComponents/LoadingIcon"
 import Table from "@/components/minorComponents/Table";
 import Image, { StaticImageData } from "next/image";
-import { mdiCrown, mdiCloud, mdiWall } from "@mdi/js";
+import { mdiCrown, mdiCloud, mdiWall, mdiShield } from "@mdi/js";
+
+import Modal from "@/components/minorComponents/Modal";
+import CrudParticipant from "@/components/minorComponents/CrudParticipant";
 
 import Camila from "../../../../public/img/portraits/Camila.png"
 import Weslei from "../../../../public/img/portraits/Weslei.png"
@@ -17,6 +20,9 @@ import Afrodite from "../../../../public/img/portraits/Afrodite.png"
 import Mariana from "../../../../public/img/portraits/Mariana.png"
 import Flavio from "../../../../public/img/portraits/Flávio.png"
 import Joao from "../../../../public/img/portraits/João Lucas.png"
+import Gisele from "../../../../public/img/portraits/Gisele.png"
+import Lorena from "../../../../public/img/portraits/Lorena.png"
+
 import Icon from "@mdi/react";
 
 const robotoBlack = Roboto({
@@ -25,10 +31,6 @@ const robotoBlack = Roboto({
   })
 
 export default function CastPage({realityName, seasonNumber}: castInfo){
-    useEffect(() => {
-        getReality();
-    }, [])
-
     const getReality = async () => {
         const res = await fetch(`/api/reality/${realityName}`, {
             method: "GET"
@@ -62,7 +64,28 @@ export default function CastPage({realityName, seasonNumber}: castInfo){
 
     const [pageLoading, setPageLoading] = useState<boolean>(true)
     const [reality, setReality] = useState<apiReality>();
+    const [openedModal, setOpenedModal] = useState<boolean>(false);
+    const [modalTitle, setModalTitle] = useState<string>("");
+    const [modalCrudContent, setModalCrudContent] = useState<realitiesTableData[] | ArrayConstructor>([]);
+    const [crudOperation, setCrudOperation] = useState<string>("add");
+    const [crudResult, setCrudResult] = useState<crudReality>()
     const [season, setSeason] = useState<crudSeasonInfos>();
+
+    useEffect(() => {
+        getReality();
+    }, [])
+
+    useEffect(() => {
+        if (modalTitle && modalTitle !== ""){
+            if (crudOperation === "add" || crudOperation === "edit"){
+                setOpenedModal(true)
+            }
+            // else {
+            //     setOpenedDeleteModal(true)
+            // }
+        }
+        
+    }, [modalCrudContent, modalTitle, crudOperation])
 
     const participantImage = (image: StaticImageData, name: string, eliminated: boolean) => {
         return (
@@ -94,6 +117,11 @@ export default function CastPage({realityName, seasonNumber}: castInfo){
                 icon = mdiWall;
                 iconColor = "text-orange-600";
                 break;
+            
+            case "Imune":
+                icon = mdiShield;
+                iconColor = "text-green-600";
+                break;
 
             case "Eliminado":
                 iconColor = "text-red-600";
@@ -120,21 +148,14 @@ export default function CastPage({realityName, seasonNumber}: castInfo){
             size: 200,
         },
         {
-            key: "profession",
-            name: "Profissão",
-        },
-        {
             key: "status",
             name: "Status",
             size: 200,
         },
         {
-            key: "elimination_day",
-            name: "Dia da eliminação"
-        },
-        {
             key: "placing",
-            name: "Colocação"
+            name: "Colocação",
+            size: 200,
         },
         {
             key: "actions",
@@ -322,6 +343,41 @@ export default function CastPage({realityName, seasonNumber}: castInfo){
         [
             {
                 key: "image",
+                name: participantImage(Lorena, "Lorena", false),
+            },
+            {
+                key: "name",
+                name: "Lorena",
+                textAlign: "center"
+            },
+            {
+                key: "placing",
+                name: "-",
+                textAlign: "center"
+            },
+            {
+                key: "profession",
+                name: "Estudante de Odontologia",
+                textAlign: "center"
+            },
+            {
+                key: "status",
+                name: statusWithIcon("Imune"),
+                textAlign: "center"
+            },
+            {
+                key: "elimination_day",
+                name: "-",
+                textAlign: "center",
+            },
+            {
+                key: "actions",
+                name: "Editar | Remover"
+            },
+        ],
+        [
+            {
+                key: "image",
                 name: participantImage(Flavio, "Flávio", true),
             },
             {
@@ -354,27 +410,72 @@ export default function CastPage({realityName, seasonNumber}: castInfo){
                 name: "Editar | Remover"
             },
         ],
+        [
+            {
+                key: "image",
+                name: participantImage(Gisele, "Gisele", false),
+            },
+            {
+                key: "name",
+                name: "Gisele",
+                textAlign: "center"
+            },
+            {
+                key: "placing",
+                name: "-",
+                textAlign: "center"
+            },
+            {
+                key: "profession",
+                name: "Ex-BBBagunça 2",
+                textAlign: "center"
+            },
+            {
+                key: "status",
+                name: statusWithIcon("No jogo"),
+                textAlign: "center"
+            },
+            {
+                key: "elimination_day",
+                name: "-",
+                textAlign: "center",
+            },
+            {
+                key: "actions",
+                name: "Editar | Remover"
+            },
+        ],
     ]
     return (
-        <>
+        <div className="h-full w-full">
         <ToastContainer transition={Slide}/>
+        {
+            openedModal ? (
+                <Modal 
+                    title={modalTitle}
+                    setModal={setOpenedModal}
+                >
+                    <CrudParticipant infos={modalCrudContent} crudAction={crudOperation} setModal={setOpenedModal} setCrudReality={setCrudResult}/>
+                </Modal>
+            ) : <></>
+        }
         {!pageLoading ? (
             <>
                 <div className={`w-full bg-purpleThemeTertiary h-12 flex items-center pl-5 text-xl rounded-tr-xl ${robotoBlack.className}`}>Elenco de {reality?.name} {season?.season_number} {season?.codename && " - " + season.codename}</div>
-                <div className="flex justify-center mt-12">
+                <div className="flex h-full justify-center mt-12">
                     <div>
                         <Table header={header} data={data}/>
                         <div className="text-right">
-                            {/* <button 
+                            <button 
                                 className={`bg-mainThemePrimary p-3 text-zinc-200 mt-3 ${robotoBlack.className} hover:bg-mainThemeSecondary transition duration-200 rounded-xl`}
                                 onClick={() => {
-                                        setModalTitle("Adicionar Temporada")
+                                        setModalTitle("Adicionar Participante")
                                         setCrudOperation("add")
                                     }
                                 }
                             >
                                     Adicionar nova
-                            </button> */}
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -384,6 +485,6 @@ export default function CastPage({realityName, seasonNumber}: castInfo){
                 <LoadingIcon/>
             </div>
         }
-        </>
+        </div>
     )
 }

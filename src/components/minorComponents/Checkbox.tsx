@@ -3,9 +3,9 @@ import { mdiToggleSwitch, mdiToggleSwitchOffOutline  } from "@mdi/js"
 
 import { checkboxProps } from "@/utils/interfaces"
 
-export default function Checkbox({state, setState, text}: checkboxProps){
+export default function Checkbox({state, setState, text, className}: checkboxProps){
     return (
-        <div className="flex items-center" onClick={() =>
+        <div className={`flex items-center ${className}`} onClick={() =>
             setState(!state)
         }>
             {

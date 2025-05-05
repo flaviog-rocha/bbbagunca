@@ -1,12 +1,12 @@
-import { iconProps } from '@/utils/interfaces';
+import { sidebarProps } from '@/utils/interfaces';
 
 import Icon from '@mdi/react';
 import Link from 'next/link';
 
 
-export default function SidebarOption({ icon, name}: iconProps){
+export default function SidebarOption({icon, name, link}: sidebarProps){
     return (
-        <Link href={"/admin/reality"}>
+        <Link href={`/admin/${link}`}>
             <div className="flex bg-mainThemeLighter items-center p-4 group hover:bg-mainThemeSecondary transition duration-300 cursor-pointer select-none">
                 <Icon
                     className='group-hover:text-white transition duration-300'

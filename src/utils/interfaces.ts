@@ -31,6 +31,7 @@ export interface checkboxProps {
     state: boolean,
     setState: (opened: boolean) => void,
     text: string,
+    className?: string
 }
 
 export interface infosInterface {
@@ -47,11 +48,42 @@ export interface crudSeasonInfos {
     current: boolean,
 }
 
+export interface crudParticipantsInfos {
+    id_participant?: number,
+    name: string,
+    gender: string,
+    age?: number,
+    profession?: string,
+    status: string,
+    elimination_date?: number,
+    traits: string[],
+}
+
+export interface crudTraitInfos {
+    id_trait?: number,
+    trait: string,
+    trait_f?: string,
+}
+
 export interface crudSeason {
     infos: dataInterface[] | ArrayConstructor,
     crudAction: string,
     setModal: (opened: boolean) => void,
     setCrudSeason: (data: crudSeasonInfos) => void,
+}
+
+export interface crudParticipants {
+    infos: dataInterface[] | ArrayConstructor,
+    crudAction: string,
+    setModal: (opened: boolean) => void,
+    setCrudParticipants: (data: crudParticipantsInfos) => void,
+}
+
+export interface crudTraits {
+    infos: dataInterface[] | ArrayConstructor,
+    crudAction: string,
+    setModal: (opened: boolean) => void,
+    setCrudTraits: (data: crudTraitInfos) => void,
 }
 export interface carouselProps {
     title: string,
@@ -78,9 +110,10 @@ export interface participantInfoProps {
     info: string
 }
 
-export interface iconProps {
+export interface sidebarProps {
     icon: string,
     name: string,
+    link: string,
 }
 
 export interface castInfo {

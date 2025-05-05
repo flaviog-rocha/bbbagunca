@@ -43,39 +43,37 @@ export default function RootLayout({
     icon: string,
     name: string,
     key: string,
+    link: string,
   }
 
   const sidebarOptions: sidebarOptionsInterface[] = [
     {
       icon: mdiHomeClockOutline,
       name: "Realities",
-      key: "realities"
+      key: "realities",
+      link: "reality",
     },
-    {
-      icon: mdiHumanQueue,
-      name: "Temporadas",
-      key: "seasons"
-    },
-    {
-      icon: mdiChatProcessing,
-      name: "Postagens",
-      key: "posts"
-    },
-    {
-      icon: mdiController,
-      name: "Dinâmicas",
-      key: "dynamics"
-    },
+    // {
+    //   icon: mdiChatProcessing,
+    //   name: "Postagens",
+    //   key: "posts"
+    // },
+    // {
+    //   icon: mdiController,
+    //   name: "Dinâmicas",
+    //   key: "dynamics"
+    // },
     {
       icon: mdiHumanGreetingVariant,
       name: "Traços",
-      key: "traits"
+      key: "traits",
+      link: "trait"
     },
-    {
-      icon: mdiChartHistogram,
-      name: "Votações",
-      key: "votes",
-    },
+    // {
+    //   icon: mdiChartHistogram,
+    //   name: "Votações",
+    //   key: "votes",
+    // },
   ];
 
   const optionsList = (options: sidebarOptionsInterface[]): ReactElement[] => {
@@ -87,6 +85,7 @@ export default function RootLayout({
           key={option.key}
           icon={option.icon}
           name={option.name}
+          link={option.link}
         />
       );
     }
@@ -99,7 +98,7 @@ export default function RootLayout({
       <body
         className={`antialiased bg-mainThemePrimary ${roboto.className} h-full`}
       >
-        <main className="w-full h-full justify-center flex justify-center items-center">
+        <main className="w-full h-full justify-center flex justify-center items-center overflow-hidden">
           <div className="md:w-5/6 md:h-5/6 bg-purpleThemeLighter flex shadow-xl rounded-xl">
             <div className="h-full w-56 bg-mainThemeDarker rounded-l-xl">
               <div className="flex justify-center mb-4">
@@ -107,7 +106,7 @@ export default function RootLayout({
               </div>
               {optionsList(sidebarOptions)}
             </div>
-            <div className="h-full w-full overflow-x-auto">
+            <div className="h-full w-full">
               {children}
             </div>
           </div>

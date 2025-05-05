@@ -25,6 +25,30 @@ model Season {
   current       Boolean @default(false)
   season_number Int
   reality       Reality @relation(fields: [id_reality], references: [id_reality])
+  participants  Participant[]
 
   @@unique([season_number, id_reality])
+}
+
+model Participant {
+    id_participant  Int @id @default(autoincrement())
+    id_season   Int
+    name    String
+    gender  String
+    name_code   String
+    age     Int?
+    profession  String?
+    status  String?
+    elimination_date    Int?
+    season  Season  @relation(fields: [id_season], references: [id_season])
+    traits  Trait[]
+
+    @@unique([id_season, name])
+}
+
+model Trait {
+    id_trait    Int     @id     @default(autoincrement())
+    trait     String
+    trait_f     String?
+    participants    Participant[]
 }
