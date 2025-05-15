@@ -5,7 +5,7 @@ import { Slide, ToastContainer, toast } from "react-toastify"
 import { Roboto } from "next/font/google";
 import { useEffect, useState } from "react";
 
-import { apiReality, castInfo, crudSeasonInfos, realitiesTableData } from "@/utils/interfaces";
+import { apiReality, castInfo, crudSeasonInfos, realitiesTableData, crudParticipantsInfos } from "@/utils/interfaces";
 import LoadingIcon from "@/components/minorComponents/LoadingIcon"
 import Table from "@/components/minorComponents/Table";
 import Image, { StaticImageData } from "next/image";
@@ -47,20 +47,54 @@ export default function CastPage({realityName, seasonNumber}: castInfo){
     }
 
     const getSeason = async () => {
-            // const formatedTableData: realitiesTableData[][] = [];
-            const res = await fetch(`/api/reality/${realityName}/${seasonNumber}`)
-    
-            const data = await res.json();
-    
-            if (data.hasOwnProperty("error")){
-                toast.error("Erro ao visualizar temporada!")
-                return;
-            }
-    
-            setSeason(data)
+        // const formatedTableData: realitiesTableData[][] = [];
+        const res = await fetch(`/api/reality/${realityName}/${seasonNumber}`)
 
-            setPageLoading(false)
+        const data = await res.json();
+
+        if (data.hasOwnProperty("error")){
+            toast.error("Erro ao visualizar temporada!")
+            return;
         }
+
+        setSeason(data)
+
+        setPageLoading(false)
+    }
+
+    const addParticipant = async (participant: crudParticipantsInfos) => {
+        console.log(participant)
+        const res = await fetch(`/api/reality/${realityName}/${seasonNumber}/participants`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                participant
+            })
+        })
+
+        const data = await res.json()
+
+        if (data.hasOwnProperty("error")){
+            toast.error("Erro ao adicionar participante!")
+            return;
+        }
+
+        // const lineData: realitiesTableData[] = Object.entries(data).map(([key, value]) => (
+        //     {
+        //         key,
+        //         name: value as string,
+        //         textAlign: 'center',
+        //     }
+        // ))
+
+        // lineData.push({key: "currentSeason", name: currentSymbol(data.current)})
+        // lineData.push({key: "seasons", name: "1"})
+        // lineData.push({key: "actions", name: tableActions(data.id_reality, data.name_code)})
+        // setTableData([...tableData, lineData])
+        toast.success("Participante adicionado(a) com sucesso!")
+    }
 
     const [pageLoading, setPageLoading] = useState<boolean>(true)
     const [reality, setReality] = useState<apiReality>();
@@ -68,7 +102,7 @@ export default function CastPage({realityName, seasonNumber}: castInfo){
     const [modalTitle, setModalTitle] = useState<string>("");
     const [modalCrudContent, setModalCrudContent] = useState<realitiesTableData[] | ArrayConstructor>([]);
     const [crudOperation, setCrudOperation] = useState<string>("add");
-    const [crudResult, setCrudResult] = useState<crudReality>()
+    const [crudResult, setCrudResult] = useState<crudParticipantsInfos>()
     const [season, setSeason] = useState<crudSeasonInfos>();
 
     useEffect(() => {
@@ -86,6 +120,19 @@ export default function CastPage({realityName, seasonNumber}: castInfo){
         }
         
     }, [modalCrudContent, modalTitle, crudOperation])
+
+    useEffect(() => {
+        if (crudResult){
+            if (crudOperation === "add"){
+                console.log(crudResult)
+                addParticipant(crudResult)
+            }
+
+            // else if (crudOperation === "edit"){
+            //     updateSeason(crudResult)
+            // }
+        }
+    }, [crudResult])
 
     const participantImage = (image: StaticImageData, name: string, eliminated: boolean) => {
         return (
@@ -128,7 +175,6 @@ export default function CastPage({realityName, seasonNumber}: castInfo){
                 break;
         }
 
-        console.log((!icon || icon === ""))
         return (
             <div className={`flex items-center justify-center ${iconColor}`}>
                 {(icon || icon !== "") && (<Icon path={icon} size={1} className="mr-2"/>)}<div>{status}</div>
@@ -451,17 +497,22 @@ export default function CastPage({realityName, seasonNumber}: castInfo){
         <ToastContainer transition={Slide}/>
         {
             openedModal ? (
-                <Modal 
+                <Modal
+                    heightClass="max-h-2/3"
                     title={modalTitle}
                     setModal={setOpenedModal}
                 >
-                    <CrudParticipant infos={modalCrudContent} crudAction={crudOperation} setModal={setOpenedModal} setCrudReality={setCrudResult}/>
+                    <CrudParticipant infos={modalCrudContent} crudAction={crudOperation} setModal={setOpenedModal} setCrudParticipants={setCrudResult}/>
                 </Modal>
             ) : <></>
         }
         {!pageLoading ? (
             <>
-                <div className={`w-full bg-purpleThemeTertiary h-12 flex items-center pl-5 text-xl rounded-tr-xl ${robotoBlack.className}`}>Elenco de {reality?.name} {season?.season_number} {season?.codename && " - " + season.codename}</div>
+                <div className={
+                    `w-full bg-purpleThemeTertiary h-12 flex items-center pl-5 text-xl rounded-tr-xl ${robotoBlack.className}`}
+                >
+                    Elenco de {reality?.name} {season?.season_number} {season?.codename && " - " + season.codename}
+                </div>
                 <div className="flex h-full justify-center mt-12">
                     <div>
                         <Table header={header} data={data}/>
@@ -474,7 +525,7 @@ export default function CastPage({realityName, seasonNumber}: castInfo){
                                     }
                                 }
                             >
-                                    Adicionar nova
+                                    Adicionar novo
                             </button>
                         </div>
                     </div>

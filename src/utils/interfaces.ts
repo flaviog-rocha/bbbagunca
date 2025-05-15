@@ -42,21 +42,28 @@ export interface infosInterface {
 }
 
 export interface crudSeasonInfos {
-    id_season?: number,
+    id_season: number,
     season_number: number,
-    codename: string,
+    codename: string | null,
     current: boolean,
 }
+export interface crudSeasonInfosWithReality extends crudSeasonInfos{
+    reality: apiReality
+}
 
+export interface traitInfo {
+    trait: string,
+}
 export interface crudParticipantsInfos {
     id_participant?: number,
     name: string,
     gender: string,
     age?: number,
+    biografy?: string,
     profession?: string,
-    status: string,
+    status?: string,
     elimination_date?: number,
-    traits: string[],
+    traits: traitInfo[],
 }
 
 export interface crudTraitInfos {
@@ -138,6 +145,18 @@ export interface inputProps {
     id: string,
     inputName: string,
     className?: string,
+    value?: string | number,
+    error?: string,
+    type?: string,
+    changeFunction: (text: string) => void
+}
+
+export interface optionsProps {
+    id: string,
+    inputName: string,
+    options: string[],
+    className?: string,
+    disabled?: string[],
     value?: string,
     error?: string,
     changeFunction: (text: string) => void
@@ -145,8 +164,8 @@ export interface inputProps {
 
 export interface modalProps {
     title: string,
-    width?: string,
-    height?: string,
+    widthClass?: string,
+    heightClass?: string,
     setModal: (opened: boolean) => void,
 }
 

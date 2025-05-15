@@ -40,6 +40,7 @@ model Participant {
     profession  String?
     status  String?
     elimination_date    Int?
+    biografy    String?
     season  Season  @relation(fields: [id_season], references: [id_season])
     traits  Trait[]
 
@@ -48,7 +49,7 @@ model Participant {
 
 model Trait {
     id_trait    Int     @id     @default(autoincrement())
-    trait     String
+    trait     String    @unique
     trait_f     String?
     participants    Participant[]
 }

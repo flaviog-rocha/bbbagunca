@@ -3,8 +3,10 @@
 import Input from "./Input";
 import { Roboto } from "next/font/google";
 import { getInfoKey } from "@/utils/objectFunctions";
-import { crudParticipants } from "@/utils/interfaces";
-import { useEffect, useState } from "react";
+import { crudParticipants, crudTraitInfos } from "@/utils/interfaces";
+import { useEffect, useRef, useState } from "react";
+import Options from "./Options";
+import AreaInput from "./AreaInput";
 
 const robotoBlack = Roboto({
   weight: "900",
@@ -12,75 +14,175 @@ const robotoBlack = Roboto({
 })
 
 export default function CrudParticipant({infos, crudAction, setModal, setCrudParticipants}: crudParticipants){
-    const addReality = () => {
+    const getAllTraits = async () => {
+        const res = await fetch('/api/trait')
+
+        const data = await res.json()
+
+        const traits = data.map((trait: crudTraitInfos) => trait.trait)
+
+        setAllTraits(traits)
+    }
+
+    const addParticipant = () => {
         setCrudParticipants({
-            name: realityName,
-            max_power: maxPower,
-            sec_power: secPower,
-            danger_zone: dangerZone,
-            safe_zone: safeZone,
+            name, 
+            gender,
+            age: Number(age),
+            profession,
+            biografy,
+            traits: [{trait: trait1}, {trait: trait2}, {trait: trait3}]
         })
     }
 
-    const updateReality = () => {
-        setCrudParticipants({
-            id_reality: realityId,
-            name: realityName,
-            max_power: maxPower,
-            sec_power: secPower,
-            danger_zone: dangerZone,
-            safe_zone: safeZone,
-        })
-    }
+    // const updateReality = () => {
+    //     setCrudParticipants({
+    //         id_reality: realityId,
+    //         name: realityName,
+    //         max_power: maxPower,
+    //         sec_power: secPower,
+    //         danger_zone: dangerZone,
+    //         safe_zone: safeZone,
+    //     })
+    // }
 
-    const saveReality = () => {
-        if (!realityName || realityName === ""){
-            setNameError("Nome do reality não pode ser vazio!")
-            return;
+    const saveParticipant = () => {
+        let hasError = false;
+        setNameError("");
+        setTrait1Error("");
+        setTrait2Error("");
+        setTrait3Error("");
+
+        console.log("Teste")
+        if (!name || name === ""){
+            console.log(name)
+            setNameError("Nome do participante não pode ser vazio!")
+            hasError = true;
         }
-        
+
+        if (!allTraits.includes(trait1)){
+            console.log("Alo")
+            setTrait1Error("Traço não existe na lista!")
+            hasError = true;
+        }
+
+        if (!allTraits.includes(trait2)){
+            setTrait2Error("Traço não existe na lista!")
+            hasError = true;
+        }
+        if (!allTraits.includes(trait3)){
+            setTrait3Error("Traço não existe na lista!")
+            hasError = true;
+        }
+
+        if (trait1 && trait2 && trait3 && (trait1 === trait2 || trait1 === trait3 || trait2 === trait3)){
+            setTrait1Error("Traços não podem ser iguais!")
+            setTrait2Error("Traços não podem ser iguais!")
+            setTrait3Error("Traços não podem ser iguais!")
+            hasError = true;
+        }
+
+        if (hasError){
+            return; 
+        }
+
         if (crudAction === "add"){
-            addReality()
+            addParticipant()
         }
 
-        else {
-            updateReality()
-        }
+        // else {
+        //     updateReality()
+        // }
 
         setModal(false)
     }
     
-    const [realityId, setRealityId] = useState<number>();
-    const [realityName, setRealityName] = useState<string>("");
+    const [participantId, setParticipantId] = useState<number>();
+    const [name, setName] = useState<string>("");
     const [nameError, setNameError] = useState<string>("");
-    const [maxPower, setmaxPower] = useState<string>("");
-    const [secPower, setSecPower] = useState<string>("");
-    const [dangerZone, setDangerZone] = useState<string>("");
-    const [safeZone, setSafeZone] = useState<string>("");
+    const [gender, setGender] = useState<string>("");
+    const [age, setAge] = useState<string>("");
+    const [profession, setProfession] = useState<string>("");
+    const [status, setStatus] = useState<string>("");
+    const [eliminationDate, setEliminationDate] = useState<string>("");
+    const [trait1, setTrait1] = useState<string>("");
+    const [trait2, setTrait2] = useState<string>("");
+    const [trait3, setTrait3] = useState<string>("");
+    const [trait1Error, setTrait1Error] = useState<string>("");
+    const [trait2Error, setTrait2Error] = useState<string>("");
+    const [trait3Error, setTrait3Error] = useState<string>("");
+    const [biografy, setBiografy] = useState<string>("");
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [allTraits, setAllTraits] = useState<string[]>([]);
 
     useEffect(() => {
         if (infos){
-            setRealityId(Number(getInfoKey(infos, "id_reality")))
-            setRealityName(getInfoKey(infos, "name"));
-            setmaxPower(getInfoKey(infos, "max_power"));
-            setSecPower(getInfoKey(infos, "sec_power"));
-            setDangerZone(getInfoKey(infos, "danger_zone"));
-            setSafeZone(getInfoKey(infos, "safe_zone"));
+            setParticipantId(Number(getInfoKey(infos, "id_participant")))
+            setName(getInfoKey(infos, "name"))
+            setGender(getInfoKey(infos, "gender"))
+            setAge(getInfoKey(infos, "age"))
+            setProfession(getInfoKey(infos, "profession"))
+            setStatus(getInfoKey(infos, "status"))
+            setEliminationDate(getInfoKey(infos, "elimination_date"))
         }
+
+        getAllTraits()
+        setIsLoading(false)
     }, [])
 
     return (
-        <div className="justify-center flex">
-            <form className="" onSubmit={(e) => {
+        <div className="justify-center flex h-2/3">
+            <form className="w-full h-2/3" onSubmit={(e) => {
                 e.preventDefault()
-                saveReality();
+                saveParticipant()
                 }}
             >
-                <Input inputName="Nome do Reality" id="name" className="m-4" value={realityName} changeFunction={setRealityName} error={nameError}/>
-                <Input inputName="Poder Máximo" id="max-power" className="m-4" value={maxPower} changeFunction={setmaxPower}/>
-                <Input inputName="Poder Secundário" id="sec-power" className="m-4" value={secPower} changeFunction={setSecPower}/>
-                <Input inputName="Risco de Eliminação" id="danger-zone" className="m-4" value={dangerZone} changeFunction={setDangerZone}/>
-                <Input inputName="Salvação" id="safe-zone" className="m-4" value={safeZone} changeFunction={setSafeZone}/>
+                <Input inputName="Nome do(a) participante" id="name" className="p-4 w-full" value={name} changeFunction={setName} error={nameError}/>
+                <div className="flex justify-between">
+                    <Options 
+                        inputName="Traço 1" 
+                        id="trait1" 
+                        options={allTraits}
+                        disabled={[trait1, trait2, trait3]} 
+                        className="m-4 w-72" 
+                        changeFunction={setTrait1}
+                        value={trait1}
+                        error={trait1Error}
+                    />
+                    <Options 
+                        inputName="Traço 2" 
+                        id="trait2" 
+                        options={allTraits}
+                        disabled={[trait1, trait2, trait3]} 
+                        className="m-4 w-72" 
+                        changeFunction={setTrait2}
+                        value={trait2}
+                        error={trait2Error}
+                    />
+                    <Options 
+                        inputName="Traço 3" 
+                        id="trait3" 
+                        options={allTraits}
+                        disabled={[trait1, trait2, trait3]} 
+                        className="m-4 w-72" 
+                        changeFunction={setTrait3}
+                        value={trait3}
+                        error={trait3Error}
+                    />
+                </div>
+                <div className="flex justify-between">
+                    <Options 
+                        inputName="Sexo" 
+                        id="gender" 
+                        options={["Masculino", "Feminino", "Outro"]}
+                        className="p-4 w-72" 
+                        changeFunction={setGender}
+                        value={gender}
+                    />
+                    <Input inputName="Profissão" id="profission" className="p-4 w-96" value={profession} changeFunction={setProfession}/>
+                    <Input inputName="Idade" id="age" type="number" className="p-4 w-64" value={age} changeFunction={setAge}/>
+                </div>
+                <AreaInput inputName="Biografia" id="biografy"  className="p-4 w-full" value={biografy} changeFunction={setBiografy}/>
                 <div className="w-full flex justify-end">
                     <button 
                         className={`bg-mainThemePrimary p-3 text-zinc-200 mt-3 ${robotoBlack.className} hover:bg-mainThemeSecondary 
@@ -91,6 +193,6 @@ export default function CrudParticipant({infos, crudAction, setModal, setCrudPar
                         </button>
                 </div>
             </form>
-        </div>
+        </div> 
     )
 }
