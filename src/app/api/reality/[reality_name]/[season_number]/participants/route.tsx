@@ -41,13 +41,12 @@ export async function GET(req: NextRequest,
             )
         }
         
-        // const reality = params.reality_name
-        const participants = await prisma.season.findMany({
+        const participants = await prisma.participant.findMany({
             where: {
                 id_season: season.id_season
             },
             orderBy: {
-                id_season: "asc"
+                id_participant: "asc"
             }
         })
 
@@ -116,9 +115,7 @@ export async function POST(req: NextRequest,
         return NextResponse.json(new_participant, {status: 201})
     }
 
-    catch (e) {
-        console.log("ERRO:")
-        console.log(e)
+    catch {
         return NextResponse.json(
             {error: "DATABASE-NOT-SET"},
             {status: 500}
