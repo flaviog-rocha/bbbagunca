@@ -10,8 +10,8 @@ export default function Checkbox({state, setState, text, className}: checkboxPro
         }>
             {
                 state ?
-                (<Icon path={mdiToggleSwitch} size={1.7} className="text-mainThemePrimary cursor-pointer"></Icon>) : 
-                (<Icon path={mdiToggleSwitchOffOutline} size={1.7} className="text-mainThemePrimary cursor-pointer"></Icon>)
+                (<Icon path={mdiToggleSwitch} size={1.7} className="text-main-theme-primary cursor-pointer"></Icon>) : 
+                (<Icon path={mdiToggleSwitchOffOutline} size={1.7} className="text-main-theme-primary cursor-pointer"></Icon>)
             }
             <span className="ml-3 select-none">{text}</span>
         </div>

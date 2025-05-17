@@ -11,7 +11,7 @@ export default function ArticlePage({id}: id){
     return (
         <div className="p-5 flex flex-col items-center">
                 <div className="text-md">Fogo no parquinho! (Notícia de id {id})</div>
-                <div className={`w-1/2 ${robotoBlack.className} text-4xl mt-2 text-mainThemeDarker`}>UM TÍTULO MUITO IRADO PARA DAR UM SUPER IMPACTO NESSA GRANDÍSSIMA NOTÍCIA</div>
+                <div className={`w-1/2 ${robotoBlack.className} text-4xl mt-2 text-main-theme-darker`}>UM TÍTULO MUITO IRADO PARA DAR UM SUPER IMPACTO NESSA GRANDÍSSIMA NOTÍCIA</div>
                 <div className="w-1/2 text-sm mt-5">Atualizado em 24 de dezembro de 2024, às 01 h 30.</div>
                 <div className="h-72 w-1/2 bg-indigo-600 rounded-2xl my-2"></div>
                 <div className="text-sm w-1/2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dictum vel ligula a fermentum. Suspendisse pharetra, augue ultrices mollis molestie, nisl nibh ornare elit, eget lacinia augue lectus ac mi.</div>

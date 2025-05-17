@@ -14,8 +14,8 @@ export default function ParticipantAffinity({participantName}: name){
                 </Image>
                 <div className='flex flex-col items-start justify-center'>
                     <p>{participantName}</p>
-                    <div className='w-64 h-4 rounded-full mt-2 bg-gradient-to-r from-stone-200 to-stone-500'>
-                        <div className='h-4 rounded-full bg-gradient-to-r from-green-50 to-green-200' style={{width: "70%"}}></div>
+                    <div className='w-64 h-4 rounded-full mt-2 bg-linear-to-r from-stone-200 to-stone-500'>
+                        <div className='h-4 rounded-full bg-linear-to-r from-green-50 to-green-200' style={{width: "70%"}}></div>
                     </div>
                 </div>
             </div>

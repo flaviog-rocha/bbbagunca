@@ -185,7 +185,7 @@ export default function CrudParticipant({infos, crudAction, setModal, setCrudPar
                 <AreaInput inputName="Biografia" id="biografy"  className="p-4 w-full" value={biografy} changeFunction={setBiografy}/>
                 <div className="w-full flex justify-end">
                     <button 
-                        className={`bg-mainThemePrimary p-3 text-zinc-200 mt-3 ${robotoBlack.className} hover:bg-mainThemeSecondary 
+                        className={`bg-main-theme-primary p-3 text-zinc-200 mt-3 ${robotoBlack.className} hover:bg-main-theme-secondary 
                                     transition duration-200 rounded-xl m-4`
                                 }
                         >

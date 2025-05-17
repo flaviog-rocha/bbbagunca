@@ -68,16 +68,16 @@ export default function ParticipantPage({participantName}: name){
 
     return (
         <>
-            <div className="h-96 w-full bg-purpleThemeLighter flex">
+            <div className="h-96 w-full bg-purple-theme-lighter flex">
                 <div className="h-96 w-full flex flex-col items-center justify-center">
-                    <div className={`text-5xl text-mainThemeDarker ${robotoBlack.className}`}>
+                    <div className={`text-5xl text-main-theme-darker ${robotoBlack.className}`}>
                         {participantName.toUpperCase()}
                     </div>
                     <div className="text-lg mt-3">
                         <ParticipantInfo infoClass="Estrela" info="Estrela"/>
                     </div>
 
-                    <div className="flex justify-end w-11/12 justify-around py-5 border-b-2 border-purpleThemePrimary">
+                    <div className="flex justify-end w-11/12 justify-around py-5 border-b-2 border-purple-theme-primary">
                         <ParticipantInfo infoClass="Traço" info="Cabeça-Quente"/>
                         <ParticipantInfo infoClass="Traço" info="Socialmente Desconfortável"/>
                         <ParticipantInfo infoClass="Traço" info="Desajeitada"/>
@@ -109,12 +109,12 @@ export default function ParticipantPage({participantName}: name){
                 </div>
             </div>
             <div className="w-full text-center">
-                <p className={`my-3 text-xl text-mainThemeDarker ${robotoBlack.className}`}>Afinidades</p>
+                <p className={`my-3 text-xl text-main-theme-darker ${robotoBlack.className}`}>Afinidades</p>
                 {listAfinity()}
-                <div className="w-5/6 border-b-2 border-purpleThemeLighter mx-auto my-5"></div>
+                <div className="w-5/6 border-b-2 border-purple-theme-lighter mx-auto my-5"></div>
             </div>
             <div className="w-full text-center mb-8">
-                <p className={`my-3 text-xl text-mainThemeDarker ${robotoBlack.className}`}>Histórico no Jogo</p>
+                <p className={`my-3 text-xl text-main-theme-darker ${robotoBlack.className}`}>Histórico no Jogo</p>
                 {cicleList(29)}
             </div>
         </>

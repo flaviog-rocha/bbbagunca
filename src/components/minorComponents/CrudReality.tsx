@@ -83,7 +83,7 @@ export default function CrudReality({infos, crudAction, setModal, setCrudReality
                 <Input inputName="Salvação" id="safe-zone" className="m-4" value={safeZone} changeFunction={setSafeZone}/>
                 <div className="w-full flex justify-end">
                     <button 
-                        className={`bg-mainThemePrimary p-3 text-zinc-200 mt-3 ${robotoBlack.className} hover:bg-mainThemeSecondary 
+                        className={`bg-main-theme-primary p-3 text-zinc-200 mt-3 ${robotoBlack.className} hover:bg-main-theme-secondary 
                                     transition duration-200 rounded-xl m-4`
                                 }
                         >

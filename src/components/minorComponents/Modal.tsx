@@ -28,7 +28,7 @@ export default function Modal({children, title, widthClass, heightClass, setModa
                 </div> */}
                 <div className={`${heightClass} ${widthClass} flex items-center`}>
                     <div className="h-full">
-                        <div className="text-white w-full bg-mainThemePrimary p-3 text-lg font-bold flex justify-between">
+                        <div className="text-white w-full bg-main-theme-primary p-3 text-lg font-bold flex justify-between">
                             <div>
                                 {title}
                             </div>
@@ -38,7 +38,7 @@ export default function Modal({children, title, widthClass, heightClass, setModa
                                 </button>
                             </div>
                         </div>
-                        <div className="bg-purpleThemePrimary w-full h-full overflow-auto">
+                        <div className="bg-purple-theme-primary w-full h-full overflow-auto">
                             {children}
                         </div>
                     </div>

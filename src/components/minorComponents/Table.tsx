@@ -10,7 +10,7 @@ export default function Table({header, data, isLoading}: tableInterface){
             header.push(
                 <th 
                     key={`header-${headerData.key}`}
-                    className="p-3 h-6 text-zinc-200 bg-mainThemePrimary"
+                    className="p-3 h-6 text-zinc-200 bg-main-theme-primary"
                     style={
                         {
                             width: headerData.size ? headerData.size : "",
@@ -34,7 +34,7 @@ export default function Table({header, data, isLoading}: tableInterface){
                     <td 
                         key="empty-table-warning" 
                         colSpan={header.length} 
-                        className="p-3 bg-purpleThemePrimary h-6"
+                        className="p-3 bg-purple-theme-primary h-6"
                     >
                         <div className="flex justify-center">
                             <LoadingIcon/>
@@ -51,7 +51,7 @@ export default function Table({header, data, isLoading}: tableInterface){
                     <td 
                         key="empty-table-warning" 
                         colSpan={header.length} 
-                        className="p-3 bg-purpleThemePrimary h-6 text-center"
+                        className="p-3 bg-purple-theme-primary h-6 text-center"
                     >
                         Nenhuma informação adicionada.
                     </td>
@@ -63,7 +63,7 @@ export default function Table({header, data, isLoading}: tableInterface){
             for (const contentIndex in contents){
                 rowsData.push(
                     <tr 
-                        className={`group hover:bg-mainThemeFullLighter transition duration-200 ${parseInt(contentIndex) % 2 === 0 ? "bg-purpleThemeLighterTable" : ""}`} 
+                        className={`group hover:bg-main-theme-full-lighter transition duration-200 ${parseInt(contentIndex) % 2 === 0 ? "bg-purple-theme-lighter-table" : ""}`} 
                         key={`row-${contentIndex}`}
                     >
                         {tableRow(contents[contentIndex], contentIndex)}
@@ -91,7 +91,7 @@ export default function Table({header, data, isLoading}: tableInterface){
 
     return (
         <div className="h-3/4 overflow-y-auto">
-            <table className="border border-collapse border-mainThemePrimary">
+            <table className="border border-collapse border-main-theme-primary">
             <thead>
                 <tr>
                     {tableHeader(header)}

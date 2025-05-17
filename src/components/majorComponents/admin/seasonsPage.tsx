@@ -335,7 +335,7 @@ export default function SeasonsPage({index}: realityName){
                                 [
                                     <button 
                                         key="cancelExcludeReality" 
-                                        className="bg-purpleThemeLighter p-2 rounded-xl hover:bg-purpleThemeSecondary hover:text-zinc-50 mr-6"
+                                        className="bg-purple-theme-lighter p-2 rounded-xl hover:bg-purple-theme-secondary hover:text-zinc-50 mr-6"
                                     >
                                         Cancelar
                                     </button>,
@@ -356,13 +356,13 @@ export default function SeasonsPage({index}: realityName){
                 ) : <></>
             }
             {!pageLoading ? (<>
-                <div className={`w-full bg-purpleThemeTertiary h-12 flex items-center pl-5 text-xl rounded-tr-xl ${robotoBlack.className}`}>Temporadas de {reality?.name}</div>
+                <div className={`w-full bg-purple-theme-tertiary h-12 flex items-center pl-5 text-xl rounded-tr-xl ${robotoBlack.className}`}>Temporadas de {reality?.name}</div>
                 <div className="flex justify-center mt-12">
                     <div>
                         <Table header={header} data={tableData}/>
                         <div className="text-right">
                             <button 
-                                className={`bg-mainThemePrimary p-3 text-zinc-200 mt-3 ${robotoBlack.className} hover:bg-mainThemeSecondary transition duration-200 rounded-xl`}
+                                className={`bg-main-theme-primary p-3 text-zinc-200 mt-3 ${robotoBlack.className} hover:bg-main-theme-secondary transition duration-200 rounded-xl`}
                                 onClick={() => {
                                         setModalTitle("Adicionar Temporada")
                                         setCrudOperation("add")

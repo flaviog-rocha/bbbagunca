@@ -23,7 +23,7 @@ export default function MainPage({index}: realityName){
 
   return (
     <div>
-      <div className={`w-full h-${iconArray.length > 24 ? '36' : '24'} bg-purpleThemeSecondary flex justify-center items-center mb-12`}>
+      <div className={`w-full h-${iconArray.length > 24 ? '36' : '24'} bg-purple-theme-secondary flex justify-center items-center mb-12`}>
         <div>
           <div className="flex items-center">
             {iconArray.length > 24 ? iconArray.slice(0, iconArray.length/2) : iconArray}
@@ -51,7 +51,7 @@ export default function MainPage({index}: realityName){
       >
         <div className="w-4/6">
           <Article id={1}/>
-          <div className='h-0.5 bg-purpleThemeTertiary w-full mx-auto my-5'></div>
+          <div className='h-0.5 bg-purple-theme-tertiary w-full mx-auto my-5'></div>
           <Article id={2}/>
         </div>
       </div>

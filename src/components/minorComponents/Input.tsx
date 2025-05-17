@@ -6,7 +6,7 @@ export default function Input({id, inputName, className, value, error, changeFun
             <label htmlFor={id} className="block pb-1">{inputName}</label>
             <input 
                 id={id}
-                className="p-2 w-full rounded-lg text-zinc-900"
+                className="p-2 w-full rounded-lg text-zinc-900 bg-white"
                 placeholder={inputName}
                 defaultValue={value}
                 onBlur={(e) => {

@@ -6,7 +6,7 @@ export default function AreaInput({id, inputName, className, value, error, chang
             <label htmlFor={id} className="block pb-1">{inputName}</label>
             <textarea 
                 id={id}
-                className="p-2 w-full h-48 rounded-lg text-zinc-900"
+                className="p-2 w-full h-48 rounded-lg text-zinc-900 bg-white"
                 placeholder={inputName}
                 defaultValue={value}
                 onBlur={(e) => {

@@ -96,11 +96,11 @@ export default function RootLayout({
   return (
     <html lang="pt-br" className="h-full">
       <body
-        className={`antialiased bg-mainThemePrimary ${roboto.className} h-full`}
+        className={`antialiased bg-main-theme-primary ${roboto.className} h-full`}
       >
         <main className="w-full h-full justify-center flex justify-center items-center overflow-hidden">
-          <div className="md:w-5/6 md:h-5/6 bg-purpleThemeLighter flex shadow-xl rounded-xl">
-            <div className="h-full w-56 bg-mainThemeDarker rounded-l-xl">
+          <div className="md:w-5/6 md:h-5/6 bg-purple-theme-lighter flex shadow-xl rounded-xl">
+            <div className="h-full w-56 bg-main-theme-darker rounded-l-xl">
               <div className="flex justify-center mb-4">
                 <Link href={"/admin"}><Image src={LogoTorchic} width={120} height={120} alt={"Logo GustTV, Torchic de chapéu"}/></Link>
               </div>

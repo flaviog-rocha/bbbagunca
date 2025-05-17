@@ -140,7 +140,7 @@ export default function CastPage({realityName, seasonNumber}: castInfo){
                 title={`${name}`} 
                 alt={`Imagem da participante ${name}`} 
                 src={image} width={60} 
-                className={`bg-indigo-100 rounded-full ${eliminated && 'grayscale'} select-none hover:bg-mainThemeLighter animation duration-200`}/> 
+                className={`bg-indigo-100 rounded-full ${eliminated && 'grayscale'} select-none hover:bg-main-theme-lighter animation duration-200`}/> 
         )
     }
 
@@ -509,7 +509,7 @@ export default function CastPage({realityName, seasonNumber}: castInfo){
         {!pageLoading ? (
             <>
                 <div className={
-                    `w-full bg-purpleThemeTertiary h-12 flex items-center pl-5 text-xl rounded-tr-xl ${robotoBlack.className}`}
+                    `w-full bg-purple-theme-tertiary h-12 flex items-center pl-5 text-xl rounded-tr-xl ${robotoBlack.className}`}
                 >
                     Elenco de {reality?.name} {season?.season_number} {season?.codename && " - " + season.codename}
                 </div>
@@ -518,7 +518,7 @@ export default function CastPage({realityName, seasonNumber}: castInfo){
                         <Table header={header} data={data}/>
                         <div className="text-right">
                             <button 
-                                className={`bg-mainThemePrimary p-3 text-zinc-200 mt-3 ${robotoBlack.className} hover:bg-mainThemeSecondary transition duration-200 rounded-xl`}
+                                className={`bg-main-theme-primary p-3 text-zinc-200 mt-3 ${robotoBlack.className} hover:bg-main-theme-secondary transition duration-200 rounded-xl`}
                                 onClick={() => {
                                         setModalTitle("Adicionar Participante")
                                         setCrudOperation("add")

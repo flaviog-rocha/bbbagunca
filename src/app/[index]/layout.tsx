@@ -36,18 +36,18 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body
-        className={`antialiased bg-mainThemePrimary ${roboto.className}`}
+        className={`antialiased bg-main-theme-primary ${roboto.className}`}
       >
         <header className={`${robotoBlack.className} text-zinc-300 text-3xl w-full h-16 flex justify-center`}>
           <Link 
-            className="md:w-5/6 w-full h-16 bg-mainThemeDarker flex justify-center items-center hover:text-zinc-50 transition duration-500"
+            className="md:w-5/6 w-full h-16 bg-main-theme-darker flex justify-center items-center hover:text-zinc-50 transition duration-500"
             href="/bbbagunca"
           >
             BBBAGUNÇA
           </Link>
         </header>
         <main className="w-full flex justify-center">
-          <div className="md:w-5/6 w-full bg-purpleThemePrimary">
+          <div className="md:w-5/6 w-full bg-purple-theme-primary">
             {children}
           </div>
         </main>
